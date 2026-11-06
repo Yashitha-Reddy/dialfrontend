@@ -1,0 +1,22 @@
+.omda-table-panel { height: clamp(180px, 28vh, 280px); flex-shrink: 0; display: flex; flex-direction: column; min-height: 0; border-top: 1px solid #d9e2df; background: #fff; color: #263b38; }
+.omda-table-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 20px; border-bottom: 1px solid #e6ece9; }
+.omda-table-header h2 { margin: 0; font-size: 13px; font-weight: 650; }
+.omda-table-header h2 span { margin-left: 10px; color: #70847a; font-size: 11px; font-weight: 400; }
+.omda-table-header p { margin: 5px 0 0; font-size: 11px; color: #61776b; }
+.omda-table-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.omda-table-actions button { border: 1px solid #dce5df; border-radius: 5px; padding: 6px 9px; background: white; color: #476858; font-size: 11px; }
+.omda-table-actions button:last-child { font-size: 20px; padding: 1px 8px; }
+.omda-table-actions button:disabled { opacity: .4; cursor: default; }
+.omda-table-scroll { flex: 1; min-height: 0; overflow: auto; }
+.omda-table-scroll table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 11px; text-align: left; }
+.omda-table-scroll th { position: sticky; top: 0; z-index: 1; background: #f3f7f5; color: #486354; font-weight: 600; }
+.omda-table-scroll th, .omda-table-scroll td { padding: 8px 14px; border-bottom: 1px solid #e9efeb; border-right: 1px solid #edf1ee; white-space: nowrap; }
+.omda-table-scroll tbody tr { cursor: pointer; }
+.omda-table-scroll tbody tr:hover { background: #f1f7f4; }
+.omda-table-scroll tbody tr.is-selected { background: #fff3bc; color: #403611; }
+.omda-table-scroll td button { padding: 3px 8px; border: 1px solid #cbd9d1; border-radius: 4px; background: transparent; color: inherit; font: inherit; }
+.omda-table-empty { margin: 16px; font-size: 12px; }
+.layer-row .attribute-table-button { display: grid; place-items: center; width: 28px; height: 30px; flex-shrink: 0; padding: 0; border: 0; border-radius: 5px; background: transparent; color: #6f947d; }
+.layer-row .attribute-table-button:hover, .layer-row .attribute-table-button[aria-pressed="true"] { background: #e4eee8; color: #24694c; }
+.attribute-table-button:focus-visible, .omda-table-panel button:focus-visible { outline: 2px solid #267963; outline-offset: 2px; }
+@media (max-width: 600px) { .omda-table-header { padding: 10px 12px; gap: 8px; } .omda-table-header h2 span { display: block; margin: 3px 0 0; } .omda-table-header p { font-size: 10px; } .omda-table-actions { gap: 6px; } }

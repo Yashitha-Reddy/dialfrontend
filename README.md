@@ -24,3 +24,5 @@ Run `npm install`, then `npm run dev` to open the application locally. Run `npm 
 For deployment, configure a static hosting service to run `npm run build` and publish `dist/`. The GitHub repository URL displays source code; use the hosting service's deployed site URL to access the login page.
 
 The catalog references GeoJSON files under `/Layer_Wise_Data_GeoJSON/`. The six OMDA Lands datasets are included under `public/Layer_Wise_Data_GeoJSON/omda_lands/`, with a distinct color for each layer. Expand OMDA Lands in the layer panel to toggle them or zoom to their extent. Other catalog datasets and original GIS/raster datasets must be served separately at the catalog paths.
+
+Selected OMDA layers also show a table button beside the zoom control. Open it to view the layer's attributes below the map. Click a row, or focus its feature button and press Enter, to highlight and zoom to that feature. Clear selection removes the highlight; closing the table or hiding its layer also clears it. Attribute tables are available only for selected OMDA layers.

@@ -1,3 +1,4 @@
+import OmdaAttributeTable from './OmdaAttributeTable'
 import { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -92,6 +93,7 @@ function MapWorkspace({ onSignOut }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [position, setPosition] = useState({ lat: home[0], lng: home[1], zoom: 13 })
   const [status, setStatus] = useState('Loading map…')
+  const [tableItem, setTableItem] = useState(null)
 
   useEffect(() => {
     const map = L.map(mapEl.current, { center: home, zoom: 13, zoomControl: false, preferCanvas: true })
@@ -174,7 +176,10 @@ function MapWorkspace({ onSignOut }) {
     enabledRef.current = next
     setEnabled(next)
     const vector = cache.current.get(item.id)
-    if (!visible) vector?.remove()
+    if (!visible) {
+      vector?.remove()
+      setTableItem(current => current?.id === item.id ? null : current)
+    }
     else if (vector) vector.addTo(mapRef.current)
     else mapRef.current.loadProjectLayer(item)
   }
@@ -193,6 +198,7 @@ function MapWorkspace({ onSignOut }) {
     setSelected(id)
   }
   function hideAll() {
+    setTableItem(null)
     cache.current.forEach(vector => vector.remove())
     enabledRef.current = new Set()
     setEnabled(new Set())
@@ -218,6 +224,7 @@ function MapWorkspace({ onSignOut }) {
               <label className="section-select-all"><input type="checkbox" aria-label={`Select all ${label(group)} layers`} checked={selectedCount === sectionItems.length} ref={input => { if (input) input.indeterminate = selectedCount > 0 && selectedCount < sectionItems.length }} onChange={event => sectionItems.forEach(item => setVisibility(item, event.target.checked))}/><span>Select all</span><small>{selectedCount}/{sectionItems.length}</small></label>
               <div>{items.map(item => <div className={`layer-row ${enabled.has(item.id) ? 'is-visible' : ''}`} key={item.id}>
                 <label><input type="checkbox" checked={enabled.has(item.id)} onChange={event => setVisibility(item, event.target.checked)}/><span className="layer-symbol" style={{ background: layerColors[item.id] }}/><span className="layer-name">{item.name}<small>{loadState[item.id] === 'loading' ? 'Loading…' : loadState[item.id] === 'error' ? 'Failed to load. Toggle to retry.' : `${item.count.toLocaleString()} features`}</small></span></label>
+                {item.group === 'OMDA_Lands' && enabled.has(item.id) && <button className="attribute-table-button" aria-label={`Open attribute table for ${item.name}`} title="Open attribute table" aria-pressed={tableItem?.id === item.id} onClick={() => setTableItem(item)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 10v10M15 10v10"/></svg></button>}
                 <button className="zoom-layer" aria-label={`Zoom to ${item.name}`} title="Zoom to layer" onClick={() => zoomToLayer(item)}><Glyph type="target"/></button>
               </div>)}</div>
             </details>
@@ -233,6 +240,7 @@ function MapWorkspace({ onSignOut }) {
         <div className="map-tools" aria-label="Map navigation"><button aria-label="Zoom in" onClick={() => mapRef.current.zoomIn()}><Glyph type="plus"/></button><button aria-label="Zoom out" onClick={() => mapRef.current.zoomOut()}><Glyph type="minus"/></button><div className="tool-divider"/><button aria-label="Zoom to project extent" onClick={fitProject}><Glyph type="target"/></button></div>
       </main>
     </div>
+    {tableItem && enabled.has(tableItem.id) && <OmdaAttributeTable key={tableItem.id} item={tableItem} mapRef={mapRef} onClose={() => setTableItem(null)}/>}
     <footer className="status-bar"><span className="map-status" role="status"><span className="status-dot"/>{loading ? `Loading ${loading} vector layer${loading === 1 ? '' : 's'}…` : status}</span><span className="developer-credit">Developed by Geokno India Private Limited</span><span className="coordinates">{Math.abs(position.lat).toFixed(4)}° {position.lat >= 0 ? 'N' : 'S'}<span className="footer-divider"/>{Math.abs(position.lng).toFixed(4)}° {position.lng >= 0 ? 'E' : 'W'}</span><span className="zoom-label">Zoom <strong>{position.zoom}</strong></span></footer>
   </div>
 }
