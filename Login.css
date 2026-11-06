@@ -11,7 +11,7 @@
 .login-submit { width: 100%; min-height: 46px; margin-top: 28px; padding: 12px; border: 0; border-radius: 8px; background: #197360; color: white; font-size: 14px; font-weight: 650; transition: background .15s; }
 .login-submit:hover { background: #125c4c; }
 .login-submit:focus-visible, .sign-out-button:focus-visible { outline: 3px solid #329d8a; outline-offset: 3px; }
-.app-header .sign-out-button { margin-left: auto; flex-shrink: 0; width: 36px; height: 36px; padding: 0; display: inline-grid; place-items: center; border: 1px solid #dfe8e4; border-radius: 8px; background: #fff; color: #527267; cursor: pointer; transition: background .15s, color .15s; }
+.app-header .sign-out-button { margin-left: auto; flex-shrink: 0; width: auto; height: 34px; padding: 0 12px; font-size: 12px; font-weight: 600; display: inline-grid; place-items: center; border: 1px solid #dfe8e4; border-radius: 8px; background: #fff; color: #527267; cursor: pointer; transition: background .15s, color .15s; }
 .app-header .sign-out-button:hover { background: #edf5f1; color: #197360; }
 @media (max-width: 600px) { .app-header .sign-out-button { margin-left: 0; } .login-card { padding: 28px; } }
 @media (max-width: 380px) { .login-page { padding: 16px; } .login-card { padding: 24px; } }

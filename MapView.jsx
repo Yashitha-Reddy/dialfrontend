@@ -201,12 +201,12 @@ function MapWorkspace({ onSignOut }) {
   const loading = Object.values(loadState).filter(state => state === 'loading').length
 
   return <div className="workspace">
-    <header className="app-header"><a className="brand" href="/" aria-label="DIAL GIS home"><span className="brand-icon"><Glyph type="map" /></span><span>DIAL<span className="brand-light"> GIS</span></span></a><span className="header-divider"/><span className="workspace-name">Airport geospatial workspace</span><button className="mobile-toggle" aria-label="Toggle vector layer panel" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><button className="sign-out-button" onClick={onSignOut} aria-label="Logout" title="Logout"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4M14 8l4 4-4 4M8 12h13"/></svg></button></header>
+    <header className="app-header"><a className="brand" href="/" aria-label="DIAL GIS home"><span className="brand-icon"><Glyph type="map" /></span><span>DIAL<span className="brand-light"> GIS</span></span></a><button className="mobile-toggle" aria-label="Toggle vector layer panel" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><button className="sign-out-button" onClick={onSignOut}>Logout</button></header>
     <div className="workspace-body">
       <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`} aria-label="Asset layers">
         <div className="sidebar-heading"><h1>Asset Layers</h1></div>
         <label className="layer-search"><Glyph type="search"/><input type="search" placeholder="Find a layer…" aria-label="Search asset layers" value={query} onChange={event => setQuery(event.target.value)}/></label>
-        <div className="layer-actions"><span>{enabled.size} visible · {catalog.length} layers</span><button onClick={hideAll} disabled={!enabled.size}>Hide all</button></div>
+        <div className="layer-actions"><span>{catalog.length} layers</span><button onClick={hideAll} disabled={!enabled.size}>Hide all</button></div>
         <div className="layer-groups">
           {groups.map(group => {
             const sectionItems = catalog.filter(item => item.group === group)
@@ -226,14 +226,14 @@ function MapWorkspace({ onSignOut }) {
         </div>
         <div className="sidebar-footer"><button className="project-extent" onClick={fitProject}><Glyph type="target"/>Zoom to project</button><span>Click a map feature to view its attributes.</span></div>
       </aside>
-      <main className="map-panel" aria-label="Interactive airport map"><div ref={mapEl} className="map"/><div className="visible-layer-count" role="status"><Glyph type="eye"/><span>{enabled.size} {enabled.size === 1 ? 'layer' : 'layers'} visible</span></div>
+      <main className="map-panel" aria-label="Interactive airport map"><div ref={mapEl} className="map"/>
         <MeasurementControl mapRef={mapRef}/>
         
         <label className="basemap-select"><Glyph type="layers"/><span>Basemap</span><select aria-label="Choose basemap" value={selected} onChange={event => changeBasemap(event.target.value)}>{Object.entries(basemaps).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
         <div className="map-tools" aria-label="Map navigation"><button aria-label="Zoom in" onClick={() => mapRef.current.zoomIn()}><Glyph type="plus"/></button><button aria-label="Zoom out" onClick={() => mapRef.current.zoomOut()}><Glyph type="minus"/></button><div className="tool-divider"/><button aria-label="Zoom to project extent" onClick={fitProject}><Glyph type="target"/></button></div>
       </main>
     </div>
-    <footer className="status-bar"><span className="map-status" role="status"><span className="status-dot"/>{loading ? `Loading ${loading} vector layer${loading === 1 ? '' : 's'}…` : status}</span><span className="coordinates">{Math.abs(position.lat).toFixed(4)}° {position.lat >= 0 ? 'N' : 'S'}<span className="footer-divider"/>{Math.abs(position.lng).toFixed(4)}° {position.lng >= 0 ? 'E' : 'W'}</span><span className="zoom-label">Zoom <strong>{position.zoom}</strong></span></footer>
+    <footer className="status-bar"><span className="map-status" role="status"><span className="status-dot"/>{loading ? `Loading ${loading} vector layer${loading === 1 ? '' : 's'}…` : status}</span><span className="developer-credit">Developed by Geokno India Private Limited</span><span className="coordinates">{Math.abs(position.lat).toFixed(4)}° {position.lat >= 0 ? 'N' : 'S'}<span className="footer-divider"/>{Math.abs(position.lng).toFixed(4)}° {position.lng >= 0 ? 'E' : 'W'}</span><span className="zoom-label">Zoom <strong>{position.zoom}</strong></span></footer>
   </div>
 }
 
