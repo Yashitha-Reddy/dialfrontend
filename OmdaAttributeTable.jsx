@@ -87,7 +87,6 @@ export default function OmdaAttributeTable({ item, mapRef, onClose }) {
         </tr>)}</tbody>
       </table>}
       {state === 'ready' && !rows.length && <p className="omda-table-empty">This layer has no features.</p>}
-      {state === 'ready' && item.summary && <p className="omda-table-empty">Areas sum each category’s Area Ac values. Categories may overlap and should not be added together.</p>}
     </div>
   </section>
 }
