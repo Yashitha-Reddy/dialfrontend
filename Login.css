@@ -1,0 +1,13 @@
+.login-page { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 24px; box-sizing: border-box; background: #edf4f2; }
+.login-card { width: 100%; max-width: 380px; padding: 32px; box-sizing: border-box; border: 1px solid #d5e2de; border-radius: 16px; background: white; box-shadow: 0 12px 40px #183e3210; }
+.login-brand { color: #267963; font-weight: 750; letter-spacing: .08em; }
+.login-card h1 { margin: 24px 0 8px; font-size: 28px; }
+.login-card p { color: #59716b; line-height: 1.5; margin: 0 0 24px; }
+.login-card label { display: block; margin: 18px 0 8px; font-size: 14px; font-weight: 600; }
+.login-card input { box-sizing: border-box; width: 100%; padding: 12px; border: 1px solid #b9ccc5; border-radius: 7px; font: inherit; }
+.login-card input:focus-visible { outline: 3px solid #329d8a; outline-offset: 2px; }
+.login-card .login-error { color: #b22c2c; margin: 14px 0 0; font-size: 14px; }
+.login-submit { width: 100%; margin-top: 24px; padding: 12px; border: 0; border-radius: 7px; background: #267963; color: white; font-weight: 650; }
+.login-submit:hover { background: #1b614e; }
+.sign-out-button { margin-left: auto; flex-shrink: 0; padding: 8px 12px; border: 1px solid #b9ccc5; border-radius: 6px; background: white; color: #263b38; }
+@media (max-width: 600px) { .app-header .sign-out-button { margin-left: 0; } }

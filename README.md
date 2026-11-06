@@ -11,7 +11,13 @@ DIAL GIS frontend components, styles, layer catalog, and preview images.
 - `index.html`: application HTML entry point.
 - `*-preview.png`: interface previews.
 
-## Integration
+## Demo login
+
+Sign in with username `test_user` and password `123456`. Sign out returns to the login screen; refreshing also ends the in-memory session. Invalid credentials display an error. The map mounts only after a successful sign-in.
+
+This is a client-side demo gate, not server authentication. Credentials are visible in the frontend source and do not protect GIS data or API endpoints. Replace this gate with backend authentication before production use. Include `Login.css` alongside `MapView.jsx` when integrating the components.
+
+## Application setup
 
 These files are frontend components rather than a complete runnable application. The repository currently has no package manifest, build configuration, or React entry point.
 

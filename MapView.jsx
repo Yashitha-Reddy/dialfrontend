@@ -3,6 +3,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import MeasurementControl from './MeasurementControl'
 import catalog from '../layer-manifest.json'
+import './Login.css'
 
 const colors = { Boundaries: '#b4528e', Airside: '#ca9429', Buildings: '#6576be', Cityside: '#6f9b59', Drainage_Sewer: '#3093ab', Other_Data: '#9a7654', Transportation: '#d17b45', Water_Bodies: '#368ed1' }
 const groups = Object.keys(colors)
@@ -38,6 +39,45 @@ function featurePopup(feature, layer, name) {
 }
 
 export default function MapView() {
+  const [signedIn, setSignedIn] = useState(false)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+
+  function signIn(event) {
+    event.preventDefault()
+    if (username === 'test_user' && password === '123456') {
+      setPassword('')
+      setError('')
+      setSignedIn(true)
+    } else {
+      setError('Incorrect username or password.')
+    }
+  }
+
+  if (signedIn) return <MapWorkspace onSignOut={() => {
+    setSignedIn(false)
+    setUsername('')
+    setPassword('')
+    setError('')
+  }}/>
+
+  return <main className="login-page">
+    <form className="login-card" onSubmit={signIn}>
+      <span className="login-brand">DIAL GIS</span>
+      <h1>Sign in</h1>
+      <p>Access your airport geospatial workspace.</p>
+      <label htmlFor="login-username">Username</label>
+      <input id="login-username" name="username" autoComplete="username" required value={username} onChange={event => { setUsername(event.target.value); setError('') }}/>
+      <label htmlFor="login-password">Password</label>
+      <input id="login-password" name="password" type="password" autoComplete="current-password" required value={password} onChange={event => { setPassword(event.target.value); setError('') }} aria-describedby={error ? 'login-error' : undefined}/>
+      {error && <p id="login-error" className="login-error" role="alert">{error}</p>}
+      <button className="login-submit" type="submit">Sign in</button>
+    </form>
+  </main>
+}
+
+function MapWorkspace({ onSignOut }) {
   const mapEl = useRef(null)
   const mapRef = useRef(null)
   const baseRef = useRef({})
@@ -161,7 +201,7 @@ export default function MapView() {
   const loading = Object.values(loadState).filter(state => state === 'loading').length
 
   return <div className="workspace">
-    <header className="app-header"><a className="brand" href="/" aria-label="DIAL GIS home"><span className="brand-icon"><Glyph type="map" /></span><span>DIAL<span className="brand-light"> GIS</span></span></a><span className="header-divider"/><span className="workspace-name">Airport geospatial workspace</span><button className="mobile-toggle" aria-label="Toggle vector layer panel" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button></header>
+    <header className="app-header"><a className="brand" href="/" aria-label="DIAL GIS home"><span className="brand-icon"><Glyph type="map" /></span><span>DIAL<span className="brand-light"> GIS</span></span></a><span className="header-divider"/><span className="workspace-name">Airport geospatial workspace</span><button className="mobile-toggle" aria-label="Toggle vector layer panel" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><button className="sign-out-button" onClick={onSignOut}>Sign out</button></header>
     <div className="workspace-body">
       <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`} aria-label="Asset layers">
         <div className="sidebar-heading"><h1>Asset Layers</h1></div>
