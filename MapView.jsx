@@ -66,7 +66,7 @@ export default function MapView() {
     <form className="login-card" onSubmit={signIn}>
       <span className="login-brand">DIAL GIS</span>
       <h1>Sign in</h1>
-      <p>Access your airport geospatial workspace.</p>
+
       <label htmlFor="login-username">Username</label>
       <input id="login-username" name="username" autoComplete="username" required value={username} onChange={event => { setUsername(event.target.value); setError('') }}/>
       <label htmlFor="login-password">Password</label>
@@ -201,7 +201,7 @@ function MapWorkspace({ onSignOut }) {
   const loading = Object.values(loadState).filter(state => state === 'loading').length
 
   return <div className="workspace">
-    <header className="app-header"><a className="brand" href="/" aria-label="DIAL GIS home"><span className="brand-icon"><Glyph type="map" /></span><span>DIAL<span className="brand-light"> GIS</span></span></a><span className="header-divider"/><span className="workspace-name">Airport geospatial workspace</span><button className="mobile-toggle" aria-label="Toggle vector layer panel" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><button className="sign-out-button" onClick={onSignOut}>Logout</button></header>
+    <header className="app-header"><a className="brand" href="/" aria-label="DIAL GIS home"><span className="brand-icon"><Glyph type="map" /></span><span>DIAL<span className="brand-light"> GIS</span></span></a><span className="header-divider"/><span className="workspace-name">Airport geospatial workspace</span><button className="mobile-toggle" aria-label="Toggle vector layer panel" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><button className="sign-out-button" onClick={onSignOut} aria-label="Logout" title="Logout"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 5H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4M14 8l4 4-4 4M8 12h13"/></svg></button></header>
     <div className="workspace-body">
       <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`} aria-label="Asset layers">
         <div className="sidebar-heading"><h1>Asset Layers</h1></div>
