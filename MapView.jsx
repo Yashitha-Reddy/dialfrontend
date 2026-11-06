@@ -238,9 +238,10 @@ function MapWorkspace({ onSignOut }) {
         
         <label className="basemap-select"><Glyph type="layers"/><span>Basemap</span><select aria-label="Choose basemap" value={selected} onChange={event => changeBasemap(event.target.value)}>{Object.entries(basemaps).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
         <div className="map-tools" aria-label="Map navigation"><button aria-label="Zoom in" onClick={() => mapRef.current.zoomIn()}><Glyph type="plus"/></button><button aria-label="Zoom out" onClick={() => mapRef.current.zoomOut()}><Glyph type="minus"/></button><div className="tool-divider"/><button aria-label="Zoom to project extent" onClick={fitProject}><Glyph type="target"/></button></div>
+    {tableItem && enabled.has(tableItem.id) && <OmdaAttributeTable key={tableItem.id} item={tableItem} mapRef={mapRef} onClose={() => setTableItem(null)}/>}
       </main>
     </div>
-    {tableItem && enabled.has(tableItem.id) && <OmdaAttributeTable key={tableItem.id} item={tableItem} mapRef={mapRef} onClose={() => setTableItem(null)}/>}
+
     <footer className="status-bar"><span className="map-status" role="status"><span className="status-dot"/>{loading ? `Loading ${loading} vector layer${loading === 1 ? '' : 's'}…` : status}</span><span className="developer-credit">Developed by Geokno India Private Limited</span><span className="coordinates">{Math.abs(position.lat).toFixed(4)}° {position.lat >= 0 ? 'N' : 'S'}<span className="footer-divider"/>{Math.abs(position.lng).toFixed(4)}° {position.lng >= 0 ? 'E' : 'W'}</span><span className="zoom-label">Zoom <strong>{position.zoom}</strong></span></footer>
   </div>
 }

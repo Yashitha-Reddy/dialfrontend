@@ -9,6 +9,7 @@ export default function OmdaAttributeTable({ item, mapRef, onClose }) {
   const [state, setState] = useState('loading')
   const [selected, setSelected] = useState(null)
   const highlight = useRef(null)
+  const panel = useRef(null)
 
   useEffect(() => {
     let cancelled = false
@@ -44,7 +45,12 @@ export default function OmdaAttributeTable({ item, mapRef, onClose }) {
     overlay.bringToFront()
     highlight.current = overlay
     setSelected(index)
-    if (overlay.getBounds().isValid()) map.fitBounds(overlay.getBounds(), { padding: [40, 40], maxZoom: 18 })
+    if (overlay.getBounds().isValid()) {
+      const mapRect = map.getContainer().getBoundingClientRect()
+      const panelRect = panel.current?.getBoundingClientRect()
+      const topPadding = panelRect ? Math.max(30, Math.min(panelRect.bottom - mapRect.top + 20, mapRect.height - 110)) : 30
+      map.fitBounds(overlay.getBounds(), { paddingTopLeft: [30, topPadding], paddingBottomRight: [30, 30], maxZoom: 18 })
+    }
   }
 
   function clearSelection() {
@@ -54,7 +60,7 @@ export default function OmdaAttributeTable({ item, mapRef, onClose }) {
   }
 
   const columns = [...new Set(rows.flatMap(feature => Object.keys(feature.properties || {})))]
-  return <section className="omda-table-panel" aria-label={`${item.name} attribute table`}>
+  return <section ref={panel} className="omda-table-panel" aria-label={`${item.name} attribute table`}>
     <header className="omda-table-header">
       <div><h2>{item.name} <span>Attributes</span></h2><p>{state === 'ready' ? `${rows.length} features · Select a row to highlight it on the map` : state === 'loading' ? 'Loading attributes…' : 'Could not load this layer. Close and reopen to retry.'}</p></div>
       <div className="omda-table-actions"><button onClick={clearSelection} disabled={selected === null}>Clear selection</button><button onClick={onClose} aria-label="Close attribute table" title="Close attribute table">×</button></div>
