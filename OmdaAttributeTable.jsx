@@ -16,6 +16,19 @@ export default function OmdaAttributeTable({ item, mapRef, onClose }) {
     const map = mapRef.current
     async function load() {
       try {
+        if (item.summary) {
+          const results = await Promise.all(item.items.map(async layer => {
+            const vector = await map.loadProjectLayer(layer)
+            if (!vector) throw new Error(`Could not load ${layer.name}`)
+            const features = vector.getLayers().map(child => child.feature).filter(Boolean)
+            const areas = features.map(feature => feature.properties?.Area_Ac)
+            const area = areas.every(value => value !== null && value !== '' && Number.isFinite(Number(value)))
+              ? Number(areas.reduce((sum, value) => sum + Number(value), 0).toFixed(2)) : null
+            return { type: 'FeatureCollection', features, properties: { Category: layer.name, Features: features.length, Area_Ac: area } }
+          }))
+          if (!cancelled) { setRows(results); setState('ready') }
+          return
+        }
         const vector = await map.loadProjectLayer(item)
         if (cancelled) return
         if (!vector) { setState('error'); return }
@@ -62,7 +75,7 @@ export default function OmdaAttributeTable({ item, mapRef, onClose }) {
   const columns = [...new Set(rows.flatMap(feature => Object.keys(feature.properties || {})))].filter(column => column.trim().toLowerCase() !== 'layer')
   return <section ref={panel} className="omda-table-panel" aria-label={`${item.name} attribute table`}>
     <header className="omda-table-header">
-      <div><h2>{item.name} <span>Attributes</span></h2><p>{state === 'ready' ? `${rows.length} features · Select a row to highlight it on the map` : state === 'loading' ? 'Loading attributes…' : 'Could not load this layer. Close and reopen to retry.'}</p></div>
+      <div><h2>{item.name} <span>{item.summary ? 'Summary' : 'Attributes'}</span></h2><p>{state === 'ready' ? item.summary ? 'Area in acres by category · Select a row to highlight it' : `${rows.length} features · Select a row to highlight it on the map` : state === 'loading' ? 'Loading attributes…' : 'Could not load this layer. Close and reopen to retry.'}</p></div>
       <div className="omda-table-actions"><button onClick={clearSelection} disabled={selected === null}>Clear selection</button><button onClick={onClose} aria-label="Close attribute table" title="Close attribute table">×</button></div>
     </header>
     <div className="omda-table-scroll" tabIndex={0} aria-label="Scrollable attributes">
@@ -74,6 +87,7 @@ export default function OmdaAttributeTable({ item, mapRef, onClose }) {
         </tr>)}</tbody>
       </table>}
       {state === 'ready' && !rows.length && <p className="omda-table-empty">This layer has no features.</p>}
+      {state === 'ready' && item.summary && <p className="omda-table-empty">Areas sum each category’s Area Ac values. Categories may overlap and should not be added together.</p>}
     </div>
   </section>
 }

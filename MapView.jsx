@@ -8,6 +8,7 @@ import './Login.css'
 
 const colors = { Boundaries: '#b4528e', OMDA_Lands: '#7c3aed', Airside: '#ca9429', Buildings: '#6576be', Cityside: '#6f9b59', Drainage_Sewer: '#3093ab', Other_Data: '#9a7654', Transportation: '#d17b45', Water_Bodies: '#368ed1' }
 const groups = Object.keys(colors)
+const omdaSummary = { id: 'omda-summary', name: 'OMDA Lands', summary: true, items: catalog.filter(item => item.group === 'OMDA_Lands') }
 const layerColors = { ...Object.fromEntries([...catalog].filter(item => !item.color).sort((a, b) => a.id.localeCompare(b.id)).map((item, index) => [item.id, `hsl(${(index * 137.508) % 360} 68% ${36 + (index % 3) * 7}%)`])), ...Object.fromEntries(catalog.filter(item => item.color).map(item => [item.id, item.color])) }
 const initial = catalog.filter(item => item.group === 'Boundaries').map(item => item.id)
 const home = [28.556, 77.093]
@@ -221,7 +222,7 @@ function MapWorkspace({ onSignOut }) {
             if (!items.length) return null
             return <details className="layer-group" key={group} open={query ? true : group === 'Boundaries' ? true : undefined}>
               <summary><span className="group-swatch" style={{ background: colors[group] }}/><strong>{label(group)}</strong><span>{items.length}</span></summary>
-              <label className="section-select-all"><input type="checkbox" aria-label={`Select all ${label(group)} layers`} checked={selectedCount === sectionItems.length} ref={input => { if (input) input.indeterminate = selectedCount > 0 && selectedCount < sectionItems.length }} onChange={event => sectionItems.forEach(item => setVisibility(item, event.target.checked))}/><span>Select all</span><small>{selectedCount}/{sectionItems.length}</small></label>
+              <div className="section-select-row"><label className="section-select-all"><input type="checkbox" aria-label={`Select all ${label(group)} layers`} checked={selectedCount === sectionItems.length} ref={input => { if (input) input.indeterminate = selectedCount > 0 && selectedCount < sectionItems.length }} onChange={event => sectionItems.forEach(item => setVisibility(item, event.target.checked))}/><span>Select all</span><small>{selectedCount}/{sectionItems.length}</small></label>{group === 'OMDA_Lands' && <button className="attribute-table-button" aria-label="Open OMDA Lands summary table" title="Open OMDA Lands summary table" onClick={() => setTableItem(omdaSummary)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 10v10M15 10v10"/></svg></button>}</div>
               <div>{items.map(item => <div className={`layer-row ${enabled.has(item.id) ? 'is-visible' : ''}`} key={item.id}>
                 <label><input type="checkbox" checked={enabled.has(item.id)} onChange={event => setVisibility(item, event.target.checked)}/><span className="layer-symbol" style={{ background: layerColors[item.id] }}/><span className="layer-name">{item.name}<small>{loadState[item.id] === 'loading' ? 'Loading…' : loadState[item.id] === 'error' ? 'Failed to load. Toggle to retry.' : `${item.count.toLocaleString()} features`}</small></span></label>
                 {item.group === 'OMDA_Lands' && enabled.has(item.id) && <button className="attribute-table-button" aria-label={`Open attribute table for ${item.name}`} title="Open attribute table" aria-pressed={tableItem?.id === item.id} onClick={() => setTableItem(item)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 10v10M15 10v10"/></svg></button>}
@@ -238,7 +239,7 @@ function MapWorkspace({ onSignOut }) {
         
         <label className="basemap-select"><Glyph type="layers"/><span>Basemap</span><select aria-label="Choose basemap" value={selected} onChange={event => changeBasemap(event.target.value)}>{Object.entries(basemaps).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
         <div className="map-tools" aria-label="Map navigation"><button aria-label="Zoom in" onClick={() => mapRef.current.zoomIn()}><Glyph type="plus"/></button><button aria-label="Zoom out" onClick={() => mapRef.current.zoomOut()}><Glyph type="minus"/></button><div className="tool-divider"/><button aria-label="Zoom to project extent" onClick={fitProject}><Glyph type="target"/></button></div>
-    {tableItem && enabled.has(tableItem.id) && <OmdaAttributeTable key={tableItem.id} item={tableItem} mapRef={mapRef} onClose={() => setTableItem(null)}/>}
+    {tableItem && (tableItem.summary || enabled.has(tableItem.id)) && <OmdaAttributeTable key={tableItem.id} item={tableItem} mapRef={mapRef} onClose={() => setTableItem(null)}/>}
       </main>
     </div>
 

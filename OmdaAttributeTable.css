@@ -19,4 +19,8 @@
 .layer-row .attribute-table-button { display: grid; place-items: center; width: 28px; height: 30px; flex-shrink: 0; padding: 0; border: 0; border-radius: 5px; background: transparent; color: #6f947d; }
 .layer-row .attribute-table-button:hover, .layer-row .attribute-table-button[aria-pressed="true"] { background: #e4eee8; color: #24694c; }
 .attribute-table-button:focus-visible, .omda-table-panel button:focus-visible { outline: 2px solid #267963; outline-offset: 2px; }
+.section-select-row { display: flex; align-items: center; padding-right: 14px; }
+.section-select-row .section-select-all { flex: 1; min-width: 0; }
+.section-select-row > .attribute-table-button { display: grid; place-items: center; flex-shrink: 0; width: 28px; height: 30px; padding: 0; border: 0; border-radius: 5px; background: transparent; color: #6f947d; }
+.section-select-row > .attribute-table-button:hover { background: #e4eee8; color: #24694c; }
 @media (max-width: 600px) { .omda-table-panel { top: 64px; left: auto; right: 12px; width: min(340px, calc(100% - 24px), calc(100dvh - 250px)); } .omda-table-header { padding: 10px 12px; gap: 8px; } .omda-table-header h2 span { display: block; margin: 3px 0 0; } .omda-table-header p { font-size: 10px; } .omda-table-actions { gap: 6px; } }
