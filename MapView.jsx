@@ -226,7 +226,7 @@ function MapWorkspace({ onSignOut }) {
         </div>
         <div className="sidebar-footer"><button className="project-extent" onClick={fitProject}><Glyph type="target"/>Zoom to project</button><span>Click a map feature to view its attributes.</span></div>
       </aside>
-      <main className="map-panel" aria-label="Interactive airport map"><div ref={mapEl} className="map"/>
+      <main className="map-panel" aria-label="Interactive airport map"><div ref={mapEl} className="map"/><div className="visible-layer-count" role="status"><Glyph type="eye"/><span>{enabled.size} {enabled.size === 1 ? 'layer' : 'layers'} visible</span></div>
         <MeasurementControl mapRef={mapRef}/>
         
         <label className="basemap-select"><Glyph type="layers"/><span>Basemap</span><select aria-label="Choose basemap" value={selected} onChange={event => changeBasemap(event.target.value)}>{Object.entries(basemaps).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
