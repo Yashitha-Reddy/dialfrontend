@@ -1,5 +1,5 @@
-.omda-table-panel { position: absolute; z-index: 700; top: 16px; right: 72px; width: min(640px, calc(100% - 96px)); height: clamp(180px, 32vh, 270px); max-height: calc(100% - 110px); display: flex; flex-direction: column; min-height: 0; border: 1px solid #d9e2df; border-radius: 10px; box-shadow: 0 8px 32px #173e3429; overflow: hidden; background: #fff; color: #263b38; }
-.omda-table-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 20px; border-bottom: 1px solid #e6ece9; }
+.omda-table-panel { position: absolute; z-index: 700; top: 16px; right: 72px; width: min(400px, calc(100% - 96px), calc(100dvh - 210px)); aspect-ratio: 1; box-sizing: border-box; display: flex; flex-direction: column; min-height: 0; border: 1px solid #d9e2df; border-radius: 10px; box-shadow: 0 8px 32px #173e3429; overflow: hidden; background: #fff; color: #263b38; }
+.omda-table-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-bottom: 1px solid #e6ece9; }
 .omda-table-header h2 { margin: 0; font-size: 13px; font-weight: 650; }
 .omda-table-header h2 span { margin-left: 10px; color: #70847a; font-size: 11px; font-weight: 400; }
 .omda-table-header p { margin: 5px 0 0; font-size: 11px; color: #61776b; }
@@ -19,4 +19,4 @@
 .layer-row .attribute-table-button { display: grid; place-items: center; width: 28px; height: 30px; flex-shrink: 0; padding: 0; border: 0; border-radius: 5px; background: transparent; color: #6f947d; }
 .layer-row .attribute-table-button:hover, .layer-row .attribute-table-button[aria-pressed="true"] { background: #e4eee8; color: #24694c; }
 .attribute-table-button:focus-visible, .omda-table-panel button:focus-visible { outline: 2px solid #267963; outline-offset: 2px; }
-@media (max-width: 600px) { .omda-table-panel { top: 64px; left: 12px; right: 12px; width: auto; max-height: 40%; } .omda-table-header { padding: 10px 12px; gap: 8px; } .omda-table-header h2 span { display: block; margin: 3px 0 0; } .omda-table-header p { font-size: 10px; } .omda-table-actions { gap: 6px; } }
+@media (max-width: 600px) { .omda-table-panel { top: 64px; left: auto; right: 12px; width: min(340px, calc(100% - 24px), calc(100dvh - 250px)); } .omda-table-header { padding: 10px 12px; gap: 8px; } .omda-table-header h2 span { display: block; margin: 3px 0 0; } .omda-table-header p { font-size: 10px; } .omda-table-actions { gap: 6px; } }
