@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import MeasurementControl from './MeasurementControl'
-import catalog from '../layer-manifest.json'
+import catalog from './layer-manifest.json'
 import './Login.css'
 
 const colors = { Boundaries: '#b4528e', Airside: '#ca9429', Buildings: '#6576be', Cityside: '#6f9b59', Drainage_Sewer: '#3093ab', Other_Data: '#9a7654', Transportation: '#d17b45', Water_Bodies: '#368ed1' }
@@ -201,7 +201,7 @@ function MapWorkspace({ onSignOut }) {
   const loading = Object.values(loadState).filter(state => state === 'loading').length
 
   return <div className="workspace">
-    <header className="app-header"><a className="brand" href="/" aria-label="DIAL GIS home"><span className="brand-icon"><Glyph type="map" /></span><span>DIAL<span className="brand-light"> GIS</span></span></a><span className="header-divider"/><span className="workspace-name">Airport geospatial workspace</span><button className="mobile-toggle" aria-label="Toggle vector layer panel" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><button className="sign-out-button" onClick={onSignOut}>Sign out</button></header>
+    <header className="app-header"><a className="brand" href="/" aria-label="DIAL GIS home"><span className="brand-icon"><Glyph type="map" /></span><span>DIAL<span className="brand-light"> GIS</span></span></a><span className="header-divider"/><span className="workspace-name">Airport geospatial workspace</span><button className="mobile-toggle" aria-label="Toggle vector layer panel" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><button className="sign-out-button" onClick={onSignOut}>Logout</button></header>
     <div className="workspace-body">
       <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`} aria-label="Asset layers">
         <div className="sidebar-heading"><h1>Asset Layers</h1></div>
