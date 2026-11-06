@@ -745,5 +745,65 @@
     "count": 1,
     "geometry": "MultiPolygon",
     "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "AerocityAssets_NTA",
+    "group": "OMDA_Lands",
+    "name": "AerocityAssets NTA",
+    "url": "/Layer_Wise_Data_GeoJSON/omda_lands/AerocityAssets_NTA.geojson",
+    "count": 23,
+    "geometry": "Polygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+    "color": "#0891b2"
+  },
+  {
+    "id": "Carved_Out_Assets",
+    "group": "OMDA_Lands",
+    "name": "Carved Out Assets",
+    "url": "/Layer_Wise_Data_GeoJSON/omda_lands/Carved_Out_Assets.geojson",
+    "count": 9,
+    "geometry": "Polygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+    "color": "#d97706"
+  },
+  {
+    "id": "Demised_Premises",
+    "group": "OMDA_Lands",
+    "name": "Demised Premises",
+    "url": "/Layer_Wise_Data_GeoJSON/omda_lands/Demised_Premises.geojson",
+    "count": 1,
+    "geometry": "Polygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+    "color": "#7c3aed"
+  },
+  {
+    "id": "Excluded_Premises",
+    "group": "OMDA_Lands",
+    "name": "Excluded Premises",
+    "url": "/Layer_Wise_Data_GeoJSON/omda_lands/Excluded_Premises.geojson",
+    "count": 2,
+    "geometry": "Polygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+    "color": "#e11d48"
+  },
+  {
+    "id": "IGI_DIAL_Property_Boundary",
+    "group": "OMDA_Lands",
+    "name": "IGI DIAL Property Boundary",
+    "url": "/Layer_Wise_Data_GeoJSON/omda_lands/IGI_DIAL_Property_Boundary.geojson",
+    "count": 1,
+    "geometry": "Polygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+    "color": "#2563eb"
+  },
+  {
+    "id": "Total_IGIA_Land",
+    "group": "OMDA_Lands",
+    "name": "Total IGIA Land",
+    "url": "/Layer_Wise_Data_GeoJSON/omda_lands/Total_IGIA_Land.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84",
+    "color": "#059669"
   }
 ]

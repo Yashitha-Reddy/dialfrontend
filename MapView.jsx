@@ -5,9 +5,9 @@ import MeasurementControl from './MeasurementControl'
 import catalog from './layer-manifest.json'
 import './Login.css'
 
-const colors = { Boundaries: '#b4528e', Airside: '#ca9429', Buildings: '#6576be', Cityside: '#6f9b59', Drainage_Sewer: '#3093ab', Other_Data: '#9a7654', Transportation: '#d17b45', Water_Bodies: '#368ed1' }
+const colors = { Boundaries: '#b4528e', OMDA_Lands: '#7c3aed', Airside: '#ca9429', Buildings: '#6576be', Cityside: '#6f9b59', Drainage_Sewer: '#3093ab', Other_Data: '#9a7654', Transportation: '#d17b45', Water_Bodies: '#368ed1' }
 const groups = Object.keys(colors)
-const layerColors = Object.fromEntries([...catalog].sort((a, b) => a.id.localeCompare(b.id)).map((item, index) => [item.id, `hsl(${(index * 137.508) % 360} 68% ${36 + (index % 3) * 7}%)`]))
+const layerColors = { ...Object.fromEntries([...catalog].filter(item => !item.color).sort((a, b) => a.id.localeCompare(b.id)).map((item, index) => [item.id, `hsl(${(index * 137.508) % 360} 68% ${36 + (index % 3) * 7}%)`])), ...Object.fromEntries(catalog.filter(item => item.color).map(item => [item.id, item.color])) }
 const initial = catalog.filter(item => item.group === 'Boundaries').map(item => item.id)
 const home = [28.556, 77.093]
 const label = value => value.replaceAll('_', ' ')
@@ -130,7 +130,7 @@ function MapWorkspace({ onSignOut }) {
           if (disposed) return null
           const color = layerColors[item.id]
           const vector = L.geoJSON(data, {
-            style: { color, weight: item.group === 'Boundaries' ? 2.5 : 1.5, fillOpacity: item.group === 'Boundaries' ? 0.035 : 0.2, dashArray: item.group === 'Boundaries' ? '7 5' : undefined },
+            style: { color, weight: item.group === 'Boundaries' ? 2.5 : item.group === 'OMDA_Lands' ? 2.2 : 1.5, fillOpacity: item.group === 'Boundaries' ? 0.035 : item.group === 'OMDA_Lands' ? 0.1 : 0.2, dashArray: item.group === 'Boundaries' ? '7 5' : undefined },
             pointToLayer: (_, latlng) => L.circleMarker(latlng, { radius: 3.5, color, fillColor: color, fillOpacity: 0.8, weight: 1 }),
             onEachFeature: (feature, layer) => featurePopup(feature, layer, item.name),
           })

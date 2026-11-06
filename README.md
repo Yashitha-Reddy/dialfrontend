@@ -23,4 +23,4 @@ Run `npm install`, then `npm run dev` to open the application locally. Run `npm 
 
 For deployment, configure a static hosting service to run `npm run build` and publish `dist/`. The GitHub repository URL displays source code; use the hosting service's deployed site URL to access the login page.
 
-The catalog references GeoJSON files under `/Layer_Wise_Data_GeoJSON/`. Those files and the original GIS/raster datasets are not included in this repository and must be served separately at the catalog paths.
+The catalog references GeoJSON files under `/Layer_Wise_Data_GeoJSON/`. The six OMDA Lands datasets are included under `public/Layer_Wise_Data_GeoJSON/omda_lands/`, with a distinct color for each layer. Expand OMDA Lands in the layer panel to toggle them or zoom to their extent. Other catalog datasets and original GIS/raster datasets must be served separately at the catalog paths.
