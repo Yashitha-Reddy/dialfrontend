@@ -1,0 +1,7 @@
+:root { font-family: Inter, 'Segoe UI', sans-serif; color: #263b38; background: #fff; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; color-scheme: light; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { font: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible { outline: 3px solid #329d8a; outline-offset: 4px; }
+button { color: inherit; }

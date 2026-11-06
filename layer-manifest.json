@@ -1,0 +1,749 @@
+[
+  {
+    "id": "Airside_Buildup_Area",
+    "group": "Airside",
+    "name": "Airside Buildup Area",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Airside_Buildup_Area.geojson",
+    "count": 12,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Apron_Surface",
+    "group": "Airside",
+    "name": "Apron Surface",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Apron_Surface.geojson",
+    "count": 14,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Cooling_Pit",
+    "group": "Airside",
+    "name": "Cooling Pit",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Cooling_Pit.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "DVOR_Area",
+    "group": "Airside",
+    "name": "DVOR Area",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/DVOR_Area.geojson",
+    "count": 2,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Fire_Pit",
+    "group": "Airside",
+    "name": "Fire Pit",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Fire_Pit.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Fueling_Service_Station",
+    "group": "Airside",
+    "name": "Fueling Service Station",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Fueling_Service_Station.geojson",
+    "count": 3,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Ground_Paint_Marking",
+    "group": "Airside",
+    "name": "Ground Paint Marking",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Ground_Paint_Marking.geojson",
+    "count": 2,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "GSE_Parking",
+    "group": "Airside",
+    "name": "GSE Parking",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/GSE_Parking.geojson",
+    "count": 6,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Infield_Area_Under_Construction",
+    "group": "Airside",
+    "name": "Infield Area Under Construction",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Infield_Area_Under_Construction.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Infield_Area",
+    "group": "Airside",
+    "name": "Infield Area",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Infield_Area.geojson",
+    "count": 309,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Lights_Runway_Approach",
+    "group": "Airside",
+    "name": "Lights Runway Approach",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Lights_Runway_Approach.geojson",
+    "count": 716,
+    "geometry": "Point",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Lights_Runway_Edge",
+    "group": "Airside",
+    "name": "Lights Runway Edge",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Lights_Runway_Edge.geojson",
+    "count": 517,
+    "geometry": "Point",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Lights_Runway_End",
+    "group": "Airside",
+    "name": "Lights Runway End",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Lights_Runway_End.geojson",
+    "count": 15,
+    "geometry": "Point",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Lights_Runway_PAPI",
+    "group": "Airside",
+    "name": "Lights Runway PAPI",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Lights_Runway_PAPI.geojson",
+    "count": 40,
+    "geometry": "Point",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Lights_Runway_Threshold",
+    "group": "Airside",
+    "name": "Lights Runway Threshold",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Lights_Runway_Threshold.geojson",
+    "count": 118,
+    "geometry": "Point",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Lights_Taxiway_Edge",
+    "group": "Airside",
+    "name": "Lights Taxiway Edge",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Lights_Taxiway_Edge.geojson",
+    "count": 1710,
+    "geometry": "Point",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Lights_Taxiway_Runway_Guard",
+    "group": "Airside",
+    "name": "Lights Taxiway Runway Guard",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Lights_Taxiway_Runway_Guard.geojson",
+    "count": 75,
+    "geometry": "Point",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Runway_Aiming_Point",
+    "group": "Airside",
+    "name": "Markings Runway Aiming Point",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Runway_Aiming_Point.geojson",
+    "count": 16,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Runway_Centre_Line",
+    "group": "Airside",
+    "name": "Markings Runway Centre Line",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Runway_Centre_Line.geojson",
+    "count": 219,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Runway_Designa",
+    "group": "Airside",
+    "name": "Markings Runway Designa",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Runway_Designa.geojson",
+    "count": 20,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Runway_Displaced_Threshold",
+    "group": "Airside",
+    "name": "Markings Runway Displaced Threshold",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Runway_Displaced_Threshold.geojson",
+    "count": 21,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Runway_Edge_Side_Stripe",
+    "group": "Airside",
+    "name": "Markings Runway Edge Side Stripe",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Runway_Edge_Side_Stripe.geojson",
+    "count": 56,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Runway_Pre_Threshold",
+    "group": "Airside",
+    "name": "Markings Runway Pre Threshold",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Runway_Pre_Threshold.geojson",
+    "count": 143,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Runway_Threshold",
+    "group": "Airside",
+    "name": "Markings Runway Threshold",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Runway_Threshold.geojson",
+    "count": 104,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Runway_TouchDownZone",
+    "group": "Airside",
+    "name": "Markings Runway TouchDownZone",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Runway_TouchDownZone.geojson",
+    "count": 156,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Taxiway_Centre_Line",
+    "group": "Airside",
+    "name": "Markings Taxiway Centre Line",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Taxiway_Centre_Line.geojson",
+    "count": 136,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Taxiway_Edge",
+    "group": "Airside",
+    "name": "Markings Taxiway Edge",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Taxiway_Edge.geojson",
+    "count": 141,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Taxiway_Shoulder",
+    "group": "Airside",
+    "name": "Markings Taxiway Shoulder",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Taxiway_Shoulder.geojson",
+    "count": 3737,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Markings_Transverse_Strip",
+    "group": "Airside",
+    "name": "Markings Transverse Strip",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Markings_Transverse_Strip.geojson",
+    "count": 9,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Open_Green_Area",
+    "group": "Airside",
+    "name": "Open Green Area",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Open_Green_Area.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Parking_Area",
+    "group": "Airside",
+    "name": "Parking Area",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Parking_Area.geojson",
+    "count": 11,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Paved_Area",
+    "group": "Airside",
+    "name": "Paved Area",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Paved_Area.geojson",
+    "count": 32,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Runway_Center_Line",
+    "group": "Airside",
+    "name": "Runway Center Line",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Runway_Center_Line.geojson",
+    "count": 4,
+    "geometry": "MultiLineString",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Runway_Shoulder",
+    "group": "Airside",
+    "name": "Runway Shoulder",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Runway_Shoulder.geojson",
+    "count": 5,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Runway_Surface",
+    "group": "Airside",
+    "name": "Runway Surface",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Runway_Surface.geojson",
+    "count": 4,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Static_Tank",
+    "group": "Airside",
+    "name": "Static Tank",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Static_Tank.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Taxiway_Shoulder",
+    "group": "Airside",
+    "name": "Taxiway Shoulder",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Taxiway_Shoulder.geojson",
+    "count": 147,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Taxiway_Surface",
+    "group": "Airside",
+    "name": "Taxiway Surface",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Taxiway_Surface.geojson",
+    "count": 9,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Terminal_Area",
+    "group": "Airside",
+    "name": "Terminal Area",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Terminal_Area.geojson",
+    "count": 5,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Wind_Sock_Area",
+    "group": "Airside",
+    "name": "Wind Sock Area",
+    "url": "/Layer_Wise_Data_GeoJSON/Airside/Wind_Sock_Area.geojson",
+    "count": 13,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Airside_Boundary",
+    "group": "Boundaries",
+    "name": "Airside Boundary",
+    "url": "/Layer_Wise_Data_GeoJSON/Boundaries/Airside_Boundary.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Landside_Boundary",
+    "group": "Boundaries",
+    "name": "Landside Boundary",
+    "url": "/Layer_Wise_Data_GeoJSON/Boundaries/Landside_Boundary.geojson",
+    "count": 2,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Arch",
+    "group": "Buildings",
+    "name": "Arch",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Arch.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "ATC_Building",
+    "group": "Buildings",
+    "name": "ATC Building",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/ATC_Building.geojson",
+    "count": 2,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "ATC_Tower",
+    "group": "Buildings",
+    "name": "ATC Tower",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/ATC_Tower.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Building",
+    "group": "Buildings",
+    "name": "Building",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Building.geojson",
+    "count": 953,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Cargo_Terminal",
+    "group": "Buildings",
+    "name": "Cargo Terminal",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Cargo_Terminal.geojson",
+    "count": 3,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Commercial",
+    "group": "Buildings",
+    "name": "Commercial",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Commercial.geojson",
+    "count": 2,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Electrical_Substation_Building",
+    "group": "Buildings",
+    "name": "Electrical Substation Building",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Electrical_Substation_Building.geojson",
+    "count": 5,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Fire_Station",
+    "group": "Buildings",
+    "name": "Fire Station",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Fire_Station.geojson",
+    "count": 5,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Hangar",
+    "group": "Buildings",
+    "name": "Hangar",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Hangar.geojson",
+    "count": 9,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Parking_Shed",
+    "group": "Buildings",
+    "name": "Parking Shed",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Parking_Shed.geojson",
+    "count": 3,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Radar_Building",
+    "group": "Buildings",
+    "name": "Radar Building",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Radar_Building.geojson",
+    "count": 4,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Security_Post",
+    "group": "Buildings",
+    "name": "Security Post",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Security_Post.geojson",
+    "count": 24,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Shed",
+    "group": "Buildings",
+    "name": "Shed",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Shed.geojson",
+    "count": 56,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Temple",
+    "group": "Buildings",
+    "name": "Temple",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Temple.geojson",
+    "count": 4,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Terminal_Building",
+    "group": "Buildings",
+    "name": "Terminal Building",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Terminal_Building.geojson",
+    "count": 8,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Toll_Booth",
+    "group": "Buildings",
+    "name": "Toll Booth",
+    "url": "/Layer_Wise_Data_GeoJSON/Buildings/Toll_Booth.geojson",
+    "count": 4,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "City_Side_Development_Area_UC",
+    "group": "Cityside",
+    "name": "City Side Development Area UC",
+    "url": "/Layer_Wise_Data_GeoJSON/Cityside/City_Side_Development_Area_UC.geojson",
+    "count": 3,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "City_Side_Development_Area",
+    "group": "Cityside",
+    "name": "City Side Development Area",
+    "url": "/Layer_Wise_Data_GeoJSON/Cityside/City_Side_Development_Area.geojson",
+    "count": 91,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Open_Area_CS",
+    "group": "Cityside",
+    "name": "Open Area CS",
+    "url": "/Layer_Wise_Data_GeoJSON/Cityside/Open_Area_CS.geojson",
+    "count": 72,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Open_Green_Area_CS",
+    "group": "Cityside",
+    "name": "Open Green Area CS",
+    "url": "/Layer_Wise_Data_GeoJSON/Cityside/Open_Green_Area_CS.geojson",
+    "count": 59,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Parking_Area_CS",
+    "group": "Cityside",
+    "name": "Parking Area CS",
+    "url": "/Layer_Wise_Data_GeoJSON/Cityside/Parking_Area_CS.geojson",
+    "count": 10,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Paved_Area_CS",
+    "group": "Cityside",
+    "name": "Paved Area CS",
+    "url": "/Layer_Wise_Data_GeoJSON/Cityside/Paved_Area_CS.geojson",
+    "count": 10,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Petrol_Pump",
+    "group": "Cityside",
+    "name": "Petrol Pump",
+    "url": "/Layer_Wise_Data_GeoJSON/Cityside/Petrol_Pump.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Play_Ground_CS",
+    "group": "Cityside",
+    "name": "Play Ground CS",
+    "url": "/Layer_Wise_Data_GeoJSON/Cityside/Play_Ground_CS.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Railway_Land",
+    "group": "Cityside",
+    "name": "Railway Land",
+    "url": "/Layer_Wise_Data_GeoJSON/Cityside/Railway_Land.geojson",
+    "count": 2,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Under_Construction_Area",
+    "group": "Cityside",
+    "name": "Under Construction Area",
+    "url": "/Layer_Wise_Data_GeoJSON/Cityside/Under_Construction_Area.geojson",
+    "count": 7,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Drainage_Closed",
+    "group": "Drainage_Sewer",
+    "name": "Drainage Closed",
+    "url": "/Layer_Wise_Data_GeoJSON/Drainage_Sewer/Drainage_Closed.geojson",
+    "count": 6,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Drainage_Open",
+    "group": "Drainage_Sewer",
+    "name": "Drainage Open",
+    "url": "/Layer_Wise_Data_GeoJSON/Drainage_Sewer/Drainage_Open.geojson",
+    "count": 228,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Point_Features",
+    "group": "Other_Data",
+    "name": "Point Features",
+    "url": "/Layer_Wise_Data_GeoJSON/Other_Data/Point_Features.geojson",
+    "count": 12672,
+    "geometry": "Point",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Road_Centerline_All",
+    "group": "Other_Data",
+    "name": "Road Centerline All",
+    "url": "/Layer_Wise_Data_GeoJSON/Other_Data/Road_Centerline_All.geojson",
+    "count": 844,
+    "geometry": "MultiLineString",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Road_Markings",
+    "group": "Other_Data",
+    "name": "Road Markings",
+    "url": "/Layer_Wise_Data_GeoJSON/Other_Data/Road_Markings.geojson",
+    "count": 33947,
+    "geometry": "MultiLineString",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Road_Special_Markings",
+    "group": "Other_Data",
+    "name": "Road Special Markings",
+    "url": "/Layer_Wise_Data_GeoJSON/Other_Data/Road_Special_Markings.geojson",
+    "count": 3613,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Trees",
+    "group": "Other_Data",
+    "name": "Trees",
+    "url": "/Layer_Wise_Data_GeoJSON/Other_Data/Trees.geojson",
+    "count": 12979,
+    "geometry": "Point",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Flyover",
+    "group": "Transportation",
+    "name": "Flyover",
+    "url": "/Layer_Wise_Data_GeoJSON/Transportation/Flyover.geojson",
+    "count": 21,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Foot_Over_Bridge",
+    "group": "Transportation",
+    "name": "Foot Over Bridge",
+    "url": "/Layer_Wise_Data_GeoJSON/Transportation/Foot_Over_Bridge.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Footpath",
+    "group": "Transportation",
+    "name": "Footpath",
+    "url": "/Layer_Wise_Data_GeoJSON/Transportation/Footpath.geojson",
+    "count": 24,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Mud_Road",
+    "group": "Transportation",
+    "name": "Mud Road",
+    "url": "/Layer_Wise_Data_GeoJSON/Transportation/Mud_Road.geojson",
+    "count": 11,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Road_Median",
+    "group": "Transportation",
+    "name": "Road Median",
+    "url": "/Layer_Wise_Data_GeoJSON/Transportation/Road_Median.geojson",
+    "count": 323,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Road",
+    "group": "Transportation",
+    "name": "Road",
+    "url": "/Layer_Wise_Data_GeoJSON/Transportation/Road.geojson",
+    "count": 228,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Tunnel",
+    "group": "Transportation",
+    "name": "Tunnel",
+    "url": "/Layer_Wise_Data_GeoJSON/Transportation/Tunnel.geojson",
+    "count": 24,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  },
+  {
+    "id": "Water_Pumping_Station",
+    "group": "Water_Bodies",
+    "name": "Water Pumping Station",
+    "url": "/Layer_Wise_Data_GeoJSON/Water_Bodies/Water_Pumping_Station.geojson",
+    "count": 1,
+    "geometry": "MultiPolygon",
+    "crs": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  }
+]
