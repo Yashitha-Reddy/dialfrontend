@@ -59,7 +59,7 @@ export default function OmdaAttributeTable({ item, mapRef, onClose }) {
     setSelected(null)
   }
 
-  const columns = [...new Set(rows.flatMap(feature => Object.keys(feature.properties || {})))]
+  const columns = [...new Set(rows.flatMap(feature => Object.keys(feature.properties || {})))].filter(column => column.trim().toLowerCase() !== 'layer')
   return <section ref={panel} className="omda-table-panel" aria-label={`${item.name} attribute table`}>
     <header className="omda-table-header">
       <div><h2>{item.name} <span>Attributes</span></h2><p>{state === 'ready' ? `${rows.length} features · Select a row to highlight it on the map` : state === 'loading' ? 'Loading attributes…' : 'Could not load this layer. Close and reopen to retry.'}</p></div>
