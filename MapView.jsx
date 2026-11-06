@@ -13,7 +13,7 @@ const layerColors = { ...Object.fromEntries([...catalog].filter(item => !item.co
 const initial = catalog.filter(item => item.group === 'Boundaries').map(item => item.id)
 const home = [28.556, 77.093]
 const label = value => value.replaceAll('_', ' ')
-const basemaps = { street: 'OpenStreetMap', satellite: 'Esri Satellite', terrain: 'OpenTopoMap' }
+const basemaps = { street: 'OpenStreetMap', satellite: 'Esri Satellite', terrain: 'OpenTopoMap', ortho: 'DIAL Ortho' }
 
 function Glyph({ type }) {
   const paths = { eye: 'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Zm13 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0', layers: 'm12 3 10 6-10 6L2 9Zm-10 10 10 6 10-6M2 17l10 6 10-6', map: 'm3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3ZM9 3v15M15 6v15', target: 'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M8 12h8m-4-4v8', plus: 'M12 5v14M5 12h14', minus: 'M5 12h14', search: 'M21 21l-6-6M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0', menu: 'M4 6h16M4 12h16M4 18h16' }
@@ -106,12 +106,13 @@ function MapWorkspace({ onSignOut }) {
     const layers = {
       street: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }),
       satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, attribution: 'Tiles &copy; Esri — Source: Esri, Vantor, Earthstar Geographics, and the GIS User Community' }),
+      ortho: L.tileLayer('https://dialortho.s3.ap-south-1.amazonaws.com/tiles/{z}/{x}/{y}.png', { minZoom: 10, maxZoom: 21, maxNativeZoom: 19, attribution: 'DIAL Orthophoto' }),
       terrain: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { maxZoom: 17, attribution: '&copy; OpenStreetMap contributors, SRTM | &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)' }),
     }
     Object.values(layers).forEach(layer => {
-      layer.on('loading', () => setStatus('Loading basemap…'))
-      layer.on('load', () => setStatus('Map ready'))
-      layer.on('tileerror', () => setStatus('Some basemap tiles are unavailable'))
+      layer.on('loading', () => setStatus(layer === layers.ortho ? 'Loading orthophoto…' : 'Loading basemap…'))
+      layer.on('load', () => setStatus(layer === layers.ortho ? 'Orthophoto ready' : 'Map ready'))
+      layer.on('tileerror', () => setStatus(layer === layers.ortho ? 'Some orthophoto tiles are unavailable at this location' : 'Some basemap tiles are unavailable'))
     })
     baseRef.current = layers
     layers.street.addTo(map)
@@ -157,7 +158,7 @@ function MapWorkspace({ onSignOut }) {
       if (disposed) return
       const bounds = L.latLngBounds([])
       vectors.forEach(vector => { if (vector?.getBounds().isValid()) bounds.extend(vector.getBounds()) })
-      if (bounds.isValid()) { projectBounds.current = bounds; map.fitBounds(bounds, { padding: [35, 35], maxZoom: 15 }) }
+      if (bounds.isValid()) { projectBounds.current = bounds; if (!map.hasLayer(layers.ortho)) map.fitBounds(bounds, { padding: [35, 35], maxZoom: 15 }) }
     })
     return () => {
       disposed = true
@@ -195,7 +196,11 @@ function MapWorkspace({ onSignOut }) {
   }
   function changeBasemap(id) {
     baseRef.current[selected].remove()
-    baseRef.current[id].addTo(mapRef.current)
+    const map = mapRef.current
+    map.setMinZoom(id === 'ortho' ? 10 : 0)
+    map.setMaxZoom(baseRef.current[id].options.maxZoom)
+    baseRef.current[id].addTo(map)
+    if (id === 'ortho') map.setView([28.5266, 77.1379], 18)
     setSelected(id)
   }
   function hideAll() {
