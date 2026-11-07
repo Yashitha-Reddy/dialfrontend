@@ -13,7 +13,6 @@ const layerColors = { ...Object.fromEntries([...catalog].filter(item => !item.co
 const initial = catalog.filter(item => item.group === 'Boundaries').map(item => item.id)
 const home = [28.556, 77.093]
 const label = value => value.replaceAll('_', ' ')
-const orthoCenter = [28.5781905, 77.1442795]
 const basemaps = { street: 'OpenStreetMap', satellite: 'Esri Satellite', terrain: 'OpenTopoMap' }
 
 function Glyph({ type }) {
@@ -221,7 +220,6 @@ function MapWorkspace({ onSignOut }) {
       ortho.remove()
       setOrthoVisible(false)
     } else {
-      map.setView(orthoCenter, 19, { animate: false })
       ortho.addTo(map)
       setOrthoVisible(true)
     }
