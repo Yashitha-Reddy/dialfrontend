@@ -45,3 +45,5 @@ html, body, #root { width: 100%; height: 100%; margin: 0; }
   .status-bar { flex-wrap: wrap; gap: 8px 16px; padding-top: 8px; padding-bottom: 8px; }
   .status-bar .developer-credit { position: static; transform: none; order: 5; flex: 0 0 100%; text-align: center; white-space: normal; font-size: 10px; }
 }
+.ortho-toggle { flex-shrink: 0; padding: 4px 7px; border: 1px solid #dce7e0; border-radius: 5px; background: #fff; color: #365e50; font-size: 11px; white-space: nowrap; }
+.ortho-toggle:hover, .ortho-toggle[aria-pressed="true"] { background: #e2f2eb; border-color: #8bbba9; color: #17644e; }
