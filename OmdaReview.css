@@ -23,6 +23,9 @@
 .review-category-button { display: flex; align-items: center; gap: 5px; flex: 1; min-width: 0; min-height: 38px; padding: 6px; border: 0; background: transparent; color: var(--review-layer-color); font: inherit; font-weight: 650; text-align: left; }
 .review-comparison tbody tr:hover, .review-selected { background: #e7f4f0; }
 .review-selected th { box-shadow: inset 3px 0 var(--review-layer-color); }
+.review-comparison-group-heading { background: #f0f5f2; font-weight: 700; }
+.review-comparison-group-heading .review-category-button { flex: 0 1 auto; }
+.review-comparison-part .review-category-button { padding-left: 16px; }
 .review-label-swatches { display: grid; gap: 3px; flex: 0 0 11px; }
 .review-label-swatches i { height: 3px; }
 .review-category-button:disabled, .review-allocation-select:disabled { opacity: .62; cursor: default; }

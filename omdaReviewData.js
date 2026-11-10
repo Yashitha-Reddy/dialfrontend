@@ -74,12 +74,10 @@ export const landStyles = {
 
 export const excludedFeatureId = feature => feature.properties?.Names === 'Additional Demised Premises' ? 'dial-additional' : 'aai-retained'
 
-export const landLegend = {
-  Total_IGIA_Land: 'Airport outline',
-  Demised_Premises: 'Original DIAL lease',
-  Carved_Out_Assets: 'Carved out of DIAL lease',
-  'aai-retained': 'Excluded land retained by AAI',
-  'dial-additional': '2009 lease to DIAL',
-  IGI_DIAL_Property_Boundary: 'DIAL property outline',
-  AerocityAssets_NTA: 'Aerocity NTA parcels',
-}
+const labelsByLayer = new Map([...landRows, ...leaseRows]
+  .filter(row => row.layers.length === 1)
+  .map(row => [row.layers[0], row.label]))
+
+export const landLegend = Object.fromEntries(
+  landRows.flatMap(row => row.layers.map(id => [id, labelsByLayer.get(id)])),
+)

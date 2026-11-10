@@ -23,6 +23,29 @@ export default function OmdaReview({ view, setView, focusedRow, showLand, enable
     }
   }
 
+  function comparisonRow(row, { groupHeading = false, part = false, gis = row.gis } = {}) {
+    const rowClass = [
+      focus === row.id && 'review-selected',
+      groupHeading && 'review-comparison-group-heading',
+      part && 'review-comparison-part',
+    ].filter(Boolean).join(' ')
+    return <tr key={row.id} className={rowClass} style={{ '--review-layer-color': landStyles[row.layers[0]].color }}>
+      <th scope={groupHeading ? 'rowgroup' : 'row'}>
+        <div className="review-label-with-info">
+          <button className="review-category-button" {...rowButton(row)}>
+            {row.layers.length > 1 && <span className="review-label-swatches" aria-hidden="true">
+              {row.layers.map(id => <i key={id} style={{ backgroundColor: landStyles[id].color }}/>)}
+            </span>}
+            <span>{row.label}</span>
+          </button>
+          <LayerInfoButton row={row} onInfo={onInfo}/>
+        </div>
+      </th>
+      <td>{acres(row.agreement)}</td>
+      <td>{groupHeading ? gis.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : acres(gis)}</td>
+    </tr>
+  }
+
   function changeView(next) {
     setView(next)
     showLand(null)
@@ -32,7 +55,6 @@ export default function OmdaReview({ view, setView, focusedRow, showLand, enable
     <div className="review-intro">
       <span className="review-kicker">IGI AIRPORT · OMDA</span>
       <h1>Airport land review</h1>
-      <p>See how the airport land allocation compares with mapped acreage and how the 2009 lease changed it.</p>
     </div>
     <nav className="review-tabs" aria-label="Land review sections">
       {tabs.map(([id, name]) => <button key={id} type="button" aria-current={view === id ? 'page' : undefined} onClick={() => changeView(id)}>{name}</button>)}
@@ -43,17 +65,16 @@ export default function OmdaReview({ view, setView, focusedRow, showLand, enable
         <table className="review-comparison">
           <caption>Areas in acres. Select a category to highlight it. Select it again to clear.</caption>
           <thead><tr><th scope="col">Land category</th><th scope="col">2006 agreement</th><th scope="col">GIS records</th></tr></thead>
-          <tbody>{landRows.map(row => <tr key={row.id} className={focus === row.id ? 'review-selected' : undefined} style={{ '--review-layer-color': landStyles[row.layers[0]].color }}>
-            <th scope="row"><div className="review-label-with-info"><button className="review-category-button" {...rowButton(row)}>
-              {row.layers.length > 1 && <span className="review-label-swatches" aria-hidden="true">
-                {row.layers.map(id => <i key={id} style={{ backgroundColor: landStyles[id].color }}/>)}
-              </span>}
-              <span>{row.label}</span>
-            </button>
-              <LayerInfoButton row={row} onInfo={onInfo}/>
-            </div></th>
-            <td>{acres(row.agreement)}</td><td>{acres(row.gis)}</td>
-          </tr>)}</tbody>
+          {landRows.map(row => {
+            if (row.id !== 'excluded') return <tbody key={row.id}>{comparisonRow(row)}</tbody>
+
+            const parts = row.layers.map(id => leaseRows.find(part => part.layers.length === 1 && part.layers[0] === id))
+            const gisTotal = parts.reduce((sum, part) => sum + part.gis, 0)
+            return <tbody className="review-comparison-group" key={row.id}>
+              {comparisonRow(row, { groupHeading: true, gis: gisTotal })}
+              {parts.map(part => comparisonRow(part, { part: true }))}
+            </tbody>
+          })}
         </table>
       </>}
       {view === 'lease' && <>
