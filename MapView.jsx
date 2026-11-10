@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import MeasurementControl from './MeasurementControl'
 import catalog from './layer-manifest.json'
 import './Login.css'
-import OmdaReview from './OmdaReview'
+import OmdaReview, { LayerInfoButton } from './OmdaReview'
 import { acres, excludedFeatureId, landLegend, landRows, landStyles, leaseRows } from './omdaReviewData'
 
 const colors = { Boundaries: '#b4528e', OMDA_Lands: '#7c3aed', Airside: '#ca9429', Buildings: '#6576be', Cityside: '#6f9b59', Drainage_Sewer: '#3093ab', Other_Data: '#9a7654', Transportation: '#d17b45', Water_Bodies: '#368ed1' }
@@ -36,12 +36,16 @@ function styleReviewLayers(vectors, highlighted = []) {
     if (landStyles[id].fillOpacity) vectors.get(id)?.bringToFront()
   })
 }
+const reviewRows = [...landRows, ...leaseRows]
+const legendRows = Object.entries(landLegend).map(([id, name]) => ({
+  id, name, row: reviewRows.find(row => row.layers.length === 1 && row.layers[0] === id),
+}))
 const home = [28.556, 77.093]
 const label = value => value.replaceAll('_', ' ')
 const basemaps = { street: 'OpenStreetMap', satellite: 'Esri Satellite', terrain: 'OpenTopoMap' }
 
 function Glyph({ type }) {
-  const paths = { eye: 'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Zm13 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0', layers: 'm12 3 10 6-10 6L2 9Zm-10 10 10 6 10-6M2 17l10 6 10-6', target: 'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M8 12h8m-4-4v8', plus: 'M12 5v14M5 12h14', minus: 'M5 12h14', search: 'M21 21l-6-6M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0', menu: 'M4 6h16M4 12h16M4 18h16' }
+  const paths = { eye: 'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Zm13 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0', eyeOff: 'M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M6.4 6.4C3.6 8 2 12 2 12s3.5 7 10 7c1.6 0 3-.4 4.2-1M10 5.2c.6-.1 1.3-.2 2-.2 6.5 0 10 7 10 7s-.8 1.6-2.3 3.2', layers: 'm12 3 10 6-10 6L2 9Zm-10 10 10 6 10-6M2 17l10 6 10-6', target: 'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M8 12h8m-4-4v8', plus: 'M12 5v14M5 12h14', minus: 'M5 12h14', search: 'M21 21l-6-6M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0', menu: 'M4 6h16M4 12h16M4 18h16' }
   return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[type]} /></svg>
 }
 
@@ -112,6 +116,7 @@ function MapWorkspace({ onSignOut }) {
   const cache = useRef(new Map())
   const pending = useRef(new Map())
   const enabledRef = useRef(new Set(initial))
+  const reviewVisibility = useRef(enabledRef.current)
   const projectBounds = useRef(null)
   const [enabled, setEnabled] = useState(new Set(initial))
   const [loadState, setLoadState] = useState({})
@@ -123,6 +128,9 @@ function MapWorkspace({ onSignOut }) {
   const [advanced, setAdvanced] = useState(false)
   const [view, setView] = useState('compare')
   const [focus, setFocus] = useState(null)
+  const [infoRow, setInfoRow] = useState(null)
+  const infoDialog = useRef(null)
+  const focusedRow = reviewRows.find(row => row.id === focus)
   const navigationRequest = useRef(0)
   const [position, setPosition] = useState({ lat: home[0], lng: home[1], zoom: 13 })
   const [status, setStatus] = useState('Loading map…')
@@ -202,7 +210,6 @@ function MapWorkspace({ onSignOut }) {
     map.loadProjectLayer = loadLayer
     Promise.all(initial.map(id => loadLayer(reviewLayers.get(id)))).then(vectors => {
       if (disposed) return
-      if (!navigationRequest.current) styleReviewLayers(layerCache)
       const bounds = L.latLngBounds([])
       vectors.forEach(vector => { if (vector?.getBounds().isValid()) bounds.extend(vector.getBounds()) })
       if (bounds.isValid()) { projectBounds.current = bounds; if (!navigationRequest.current && !map.hasLayer(ortho)) map.fitBounds(bounds, { padding: [35, 35], maxZoom: 15 }) }
@@ -218,26 +225,43 @@ function MapWorkspace({ onSignOut }) {
     }
   }, [])
 
-  async function showLand(row) {
-    const map = mapRef.current
-    const request = ++navigationRequest.current
-    const next = new Set(initial)
-    enabledRef.current = next
-    setEnabled(next)
+  useEffect(() => {
+    if (!advanced) {
+      const highlighted = focusedRow?.layers.filter(id => enabled.has(id))
+      styleReviewLayers(cache.current, highlighted)
+    }
+  }, [advanced, enabled, focusedRow, loadState])
+
+  function showLayerInfo(row) {
+    setInfoRow(row)
+    infoDialog.current.showModal()
+  }
+
+  function showLand(row) {
     setFocus(row?.id ?? null)
-    setTableItem(null)
-    map.closePopup()
-    cache.current.forEach((vector, id) => { if (!next.has(id)) vector.remove() })
-    const visible = await Promise.all([...next].map(id => map.loadProjectLayer(reviewLayers.get(id))))
-    if (mapRef.current !== map || request !== navigationRequest.current) return
-    visible.forEach(vector => { if (vector && !map.hasLayer(vector)) vector.addTo(map) })
-    styleReviewLayers(cache.current, row?.layers)
+    mapRef.current.closePopup()
+  }
+
+  function toggleReviewLayer(id) {
+    setVisibility(reviewLayers.get(id), !enabledRef.current.has(id))
+    reviewVisibility.current = enabledRef.current
+    if (focusedRow && !focusedRow.layers.some(layer => enabledRef.current.has(layer))) showLand(null)
   }
 
   function toggleAdvanced() {
     if (advanced) {
-      const row = [...landRows, ...leaseRows].find(row => row.id === focus)
-      showLand(row)
+      navigationRequest.current += 1
+      const next = reviewVisibility.current
+      enabledRef.current = next
+      setEnabled(next)
+      setTableItem(null)
+      mapRef.current.closePopup()
+      cache.current.forEach((vector, id) => { if (!next.has(id)) vector.remove() })
+      for (const id of next) {
+        const vector = cache.current.get(id)
+        if (vector) vector.addTo(mapRef.current)
+        else mapRef.current.loadProjectLayer(reviewLayers.get(id))
+      }
     } else {
       styleReviewLayers(cache.current)
       const split = ['aai-retained', 'dial-additional'].filter(id => enabledRef.current.has(id))
@@ -302,9 +326,7 @@ function MapWorkspace({ onSignOut }) {
     setEnabled(new Set())
   }
   const filtered = catalog.filter(item => `${item.name} ${label(item.group)}`.toLowerCase().includes(query.toLowerCase()))
-  const legend = Object.keys(landLegend).filter(id => enabled.has(id))
-  const highlighted = [...landRows, ...leaseRows].find(row => row.id === focus)?.layers ?? []
-  const missingReviewLayer = !advanced && legend.some(id => loadState[id] === 'error')
+  const missingReviewLayer = !advanced && legendRows.some(({ id }) => enabled.has(id) && loadState[id] === 'error')
   const loading = Object.values(loadState).filter(state => state === 'loading').length
 
   return <div className="workspace">
@@ -338,16 +360,33 @@ function MapWorkspace({ onSignOut }) {
         <div className="sidebar-footer"><button className="project-extent" onClick={fitProject}><Glyph type="target"/>Zoom to project</button><span>Click a map feature to view its attributes.</span></div>
         </div>}
         <div className="guided-review-panel" hidden={advanced}>
-          <OmdaReview view={view} setView={setView} focus={focus} showLand={showLand}/>
+          <OmdaReview view={view} setView={setView} focusedRow={focusedRow} showLand={showLand} enabled={enabled} onInfo={showLayerInfo}/>
         </div>
       </aside>
       <main className="map-panel" aria-label="Interactive airport map"><div ref={mapEl} className="map"/>
         {advanced ? <div className="visible-layer-count" role="status"><Glyph type="eye"/><span>{enabled.size} {enabled.size === 1 ? 'layer' : 'layers'} visible</span></div> :
-          <div className="review-map-legend" role="region" aria-label="Map legend" tabIndex={0}>
-            <strong>OMDA land categories</strong>
-            {legend.map(id => <span key={id} aria-current={highlighted.includes(id) ? true : undefined}><i style={{ borderTopColor: landStyles[id].color, borderTopStyle: landStyles[id].dashArray ? 'dashed' : 'solid' }} />{landLegend[id]}</span>)}
-            {missingReviewLayer && <small role="status">Some boundaries could not load. Select the category to retry.</small>}
-          </div>}
+          <details className="review-map-legend" open>
+            <summary>OMDA land categories</summary>
+            <div className="review-legend-items" role="region" aria-label="Map legend">
+              {legendRows.map(({ id, name, row }) => {
+                const visible = enabled.has(id)
+                const selected = visible && focusedRow?.layers.includes(id)
+                const style = landStyles[id]
+                return <div className="review-legend-row" key={id}>
+                  <button type="button" className="review-legend-name" disabled={!visible} aria-pressed={Boolean(selected)}
+                    style={{ color: style.color }} onClick={() => showLand(focus === row.id ? null : row)}>
+                    <i aria-hidden="true" style={{ borderTopStyle: style.dashArray ? 'dashed' : 'solid' }} />{name}
+                  </button>
+                  <LayerInfoButton row={row} name={name} onInfo={showLayerInfo}/>
+                  <button type="button" className="review-legend-eye" aria-label={`Show ${name}`} aria-pressed={visible}
+                    title={visible ? `Hide ${name}` : `Show ${name}`} onClick={() => toggleReviewLayer(id)}>
+                    <Glyph type={visible ? 'eye' : 'eyeOff'} />
+                  </button>
+                </div>
+              })}
+              {missingReviewLayer && <small role="status">Some layers could not load. Turn them off and on to retry.</small>}
+            </div>
+          </details>}
         <MeasurementControl mapRef={mapRef}/>
         
         <div className="basemap-select"><Glyph type="layers"/><span>Basemap</span><select aria-label="Choose basemap" value={selected} onChange={event => changeBasemap(event.target.value)}>{Object.entries(basemaps).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select><button className="ortho-toggle" type="button" aria-pressed={orthoVisible} onClick={toggleOrtho}>Ortho photo</button></div>
@@ -355,6 +394,21 @@ function MapWorkspace({ onSignOut }) {
     {tableItem && (tableItem.summary || enabled.has(tableItem.id)) && <OmdaAttributeTable key={tableItem.id} item={tableItem} mapRef={mapRef} onClose={() => setTableItem(null)}/>}
       </main>
     </div>
+
+    <dialog ref={infoDialog} className="review-info-dialog" aria-labelledby="review-info-title" onClose={() => setInfoRow(null)}>
+      <form method="dialog">
+        <button type="submit" aria-label="Close layer information">×</button>
+      </form>
+      {infoRow && <>
+        <h2 id="review-info-title" style={{ color: landStyles[infoRow.layers[0]].color }}>{infoRow.label}</h2>
+        <p>{infoRow.detail}</p>
+        {infoRow.agreement != null && infoRow.gis != null && (
+          <p className="review-difference">
+            {acres(Math.abs(infoRow.gis - infoRow.agreement))} acres {infoRow.gis === infoRow.agreement ? 'difference' : infoRow.gis > infoRow.agreement ? 'above the 2006 agreement' : 'below the 2006 agreement'}
+          </p>
+        )}
+      </>}
+    </dialog>
 
     <footer className="status-bar"><span className="map-status" role="status"><span className="status-dot"/>{loading ? `Loading ${loading} vector layer${loading === 1 ? '' : 's'}…` : orthoVisible && position.zoom >= 10 ? orthoStatus : status}</span><span className="developer-credit">Developed by Geokno India Private Limited</span><span className="coordinates">{Math.abs(position.lat).toFixed(4)}° {position.lat >= 0 ? 'N' : 'S'}<span className="footer-divider"/>{Math.abs(position.lng).toFixed(4)}° {position.lng >= 0 ? 'E' : 'W'}</span><span className="zoom-label">Zoom <strong>{position.zoom}</strong></span></footer>
   </div>

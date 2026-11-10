@@ -1,13 +1,27 @@
 import React from 'react'
-import { acres, landRows, leaseRows } from './omdaReviewData'
+import { acres, landRows, landStyles, leaseRows } from './omdaReviewData'
 import './OmdaReview.css'
 
 const tabs = [['compare', 'Compare areas'], ['lease', 'Follow the lease']]
 
-export default function OmdaReview({ view, setView, focus, showLand }) {
-  const selected = view === 'lease'
-    ? leaseRows.find(row => row.id === focus) || leaseRows[0]
-    : landRows.find(row => row.id === focus) || landRows[0]
+export function LayerInfoButton({ row, name = row.label, onInfo }) {
+  return <button type="button" className="review-info-button" style={{ color: landStyles[row.layers[0]].color }}
+    aria-label={`Information about ${name}`} aria-haspopup="dialog" title={`Information about ${name}`}
+    onClick={() => onInfo(row)}>
+    <span aria-hidden="true">i</span>
+  </button>
+}
+
+export default function OmdaReview({ view, setView, focusedRow, showLand, enabled, onInfo }) {
+  const focus = focusedRow?.id
+
+  function rowButton(row) {
+    return {
+      'aria-pressed': focus === row.id,
+      disabled: !row.layers.some(id => enabled.has(id)),
+      onClick: () => showLand(focus === row.id ? null : row),
+    }
+  }
 
   function changeView(next) {
     setView(next)
@@ -29,13 +43,18 @@ export default function OmdaReview({ view, setView, focus, showLand }) {
         <table className="review-comparison">
           <caption>Areas in acres. Select a category to highlight it. Select it again to clear.</caption>
           <thead><tr><th scope="col">Land category</th><th scope="col">2006 agreement</th><th scope="col">GIS records</th></tr></thead>
-          <tbody>{landRows.map(row => <tr key={row.id} className={focus === row.id ? 'review-selected' : undefined}>
-            <th scope="row"><button aria-pressed={focus === row.id} onClick={() => showLand(focus === row.id ? null : row)}>{row.label}</button></th>
+          <tbody>{landRows.map(row => <tr key={row.id} className={focus === row.id ? 'review-selected' : undefined} style={{ '--review-layer-color': landStyles[row.layers[0]].color }}>
+            <th scope="row"><div className="review-label-with-info"><button className="review-category-button" {...rowButton(row)}>
+              {row.layers.length > 1 && <span className="review-label-swatches" aria-hidden="true">
+                {row.layers.map(id => <i key={id} style={{ backgroundColor: landStyles[id].color }}/>)}
+              </span>}
+              <span>{row.label}</span>
+            </button>
+              <LayerInfoButton row={row} onInfo={onInfo}/>
+            </div></th>
             <td>{acres(row.agreement)}</td><td>{acres(row.gis)}</td>
           </tr>)}</tbody>
         </table>
-        {selected.agreement != null && selected.gis != null &&
-          <p className="review-difference">{acres(Math.abs(selected.gis - selected.agreement))} acres {selected.gis === selected.agreement ? 'difference' : selected.gis > selected.agreement ? 'above the reference' : 'below the reference'}</p>}
       </>}
       {view === 'lease' && <>
         <div className="review-lease-intro">
@@ -45,22 +64,24 @@ export default function OmdaReview({ view, setView, focus, showLand }) {
           <p>AAI divided the detailed <strong>247.10 acres</strong> of Excluded Premises into two parts.</p>
         </div>
         <div className="review-allocation">
-          {leaseRows.slice(0, 2).map(row => <button key={row.id} aria-pressed={focus === row.id} onClick={() => showLand(focus === row.id ? null : row)}>
-            <strong>{acres(row.gis)} acres</strong><span>{row.label}</span>
-          </button>)}
+          {leaseRows.slice(0, 2).map(row => <div className="review-allocation-card" key={row.id}>
+            <button className="review-allocation-select" {...rowButton(row)}>
+              <strong>{acres(row.gis)} acres</strong><span style={{ color: landStyles[row.layers[0]].color }}>{row.label}</span>
+            </button>
+            <LayerInfoButton row={row} onInfo={onInfo}/>
+          </div>)}
         </div>
         <h2 className="review-subtitle">After the lease · mapped acres</h2>
         <div className="review-allocation">
-          {leaseRows.slice(2).map(row => <button key={row.id} aria-pressed={focus === row.id} onClick={() => showLand(focus === row.id ? null : row)}>
-            <strong>{acres(row.gis)} acres</strong><span>{row.label}</span>
-          </button>)}
+          {leaseRows.slice(2).map(row => <div className="review-allocation-card" key={row.id}>
+            <button className="review-allocation-select" {...rowButton(row)}>
+              <strong>{acres(row.gis)} acres</strong><span style={{ color: landStyles[row.layers[0]].color }}>{row.label}</span>
+            </button>
+            <LayerInfoButton row={row} onInfo={onInfo}/>
+          </div>)}
         </div>
         <p className="review-hint">The two mapped allocations sum to 4,984.39 acres. The GIS airport boundary record shows 4,984.38 acres.</p>
       </>}
-      <div className="review-detail">
-        <h2>{selected.label}</h2>
-        <p>{selected.detail}</p>
-      </div>
     </div>
   </section>
 }
