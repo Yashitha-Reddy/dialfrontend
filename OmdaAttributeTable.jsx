@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import './OmdaAttributeTable.css'
 
@@ -75,12 +75,12 @@ export default function OmdaAttributeTable({ item, mapRef, onClose }) {
   const columns = [...new Set(rows.flatMap(feature => Object.keys(feature.properties || {})))].filter(column => column.trim().toLowerCase() !== 'layer')
   return <section ref={panel} className="omda-table-panel" aria-label={`${item.name} attribute table`}>
     <header className="omda-table-header">
-      <div><h2>{item.name} <span>{item.summary ? 'Summary' : 'Attributes'}</span></h2><p>{state === 'ready' ? item.summary ? 'Area in acres by category · Select a row to highlight it' : `${rows.length} features · Select a row to highlight it on the map` : state === 'loading' ? 'Loading attributes…' : 'Could not load this layer. Close and reopen to retry.'}</p></div>
+      <div><h2>{item.name} <span>{item.summary ? 'Summary' : 'Attributes'}</span></h2><p>{state === 'ready' ? item.summary ? 'GIS attribute acres by layer. Layers can overlap. Select a row to highlight it.' : `${rows.length} features · Select a row to highlight it on the map` : state === 'loading' ? 'Loading attributes…' : 'Could not load this layer. Close and reopen to retry.'}</p></div>
       <div className="omda-table-actions"><button onClick={clearSelection} disabled={selected === null}>Clear selection</button><button onClick={onClose} aria-label="Close attribute table" title="Close attribute table">×</button></div>
     </header>
     <div className="omda-table-scroll" tabIndex={0} aria-label="Scrollable attributes">
       {state === 'ready' && <table>
-        <thead><tr><th scope="col">Feature</th>{columns.map(column => <th scope="col" key={column}>{column.replaceAll('_', ' ')}</th>)}</tr></thead>
+        <thead><tr><th scope="col">Feature</th>{columns.map(column => <th scope="col" key={column}>{column === 'Area_Ac' ? 'GIS acres' : column.replaceAll('_', ' ')}</th>)}</tr></thead>
         <tbody>{rows.map((feature, index) => <tr key={index} className={selected === index ? 'is-selected' : ''} onClick={() => selectFeature(feature, index)}>
           <td><button aria-label={`Highlight feature ${index + 1}`} aria-pressed={selected === index}>{index + 1}</button></td>
           {columns.map(column => <td key={column}>{displayValue(feature.properties?.[column])}</td>)}

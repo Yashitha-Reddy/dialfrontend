@@ -1,22 +1,47 @@
 import OmdaAttributeTable from './OmdaAttributeTable'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import MeasurementControl from './MeasurementControl'
 import catalog from './layer-manifest.json'
 import './Login.css'
+import OmdaReview from './OmdaReview'
+import { acres, excludedFeatureId, landLegend, landRows, landStyles, leaseRows } from './omdaReviewData'
 
 const colors = { Boundaries: '#b4528e', OMDA_Lands: '#7c3aed', Airside: '#ca9429', Buildings: '#6576be', Cityside: '#6f9b59', Drainage_Sewer: '#3093ab', Other_Data: '#9a7654', Transportation: '#d17b45', Water_Bodies: '#368ed1' }
 const groups = Object.keys(colors)
 const omdaSummary = { id: 'omda-summary', name: 'OMDA Lands', summary: true, items: catalog.filter(item => item.group === 'OMDA_Lands') }
 const layerColors = { ...Object.fromEntries([...catalog].filter(item => !item.color).sort((a, b) => a.id.localeCompare(b.id)).map((item, index) => [item.id, `hsl(${(index * 137.508) % 360} 68% ${36 + (index % 3) * 7}%)`])), ...Object.fromEntries(catalog.filter(item => item.color).map(item => [item.id, item.color])) }
-const initial = catalog.filter(item => item.group === 'Boundaries').map(item => item.id)
+const excludedLayer = catalog.find(item => item.id === 'Excluded_Premises')
+const reviewLayers = new Map([
+  ...omdaSummary.items.map(item => [item.id, item]),
+  ...['aai-retained', 'dial-additional'].map(id => [id, { ...excludedLayer, id, name: landLegend[id], filter: feature => excludedFeatureId(feature) === id }]),
+])
+const initial = ['Total_IGIA_Land', 'IGI_DIAL_Property_Boundary', 'Demised_Premises', 'Carved_Out_Assets', 'aai-retained', 'dial-additional', 'AerocityAssets_NTA']
+
+function styleReviewLayers(vectors, highlighted = []) {
+  for (const id of initial) {
+    const vector = vectors.get(id)
+    if (!vector) continue
+    const style = landStyles[id]
+    if (!highlighted.length) vector.resetStyle()
+    else if (highlighted.includes(id)) {
+      vector.setStyle({ ...style, opacity: 1, weight: style.weight + 2, fillOpacity: style.fillOpacity ? style.fillOpacity + 0.14 : 0 })
+    } else {
+      vector.setStyle({ ...style, opacity: 0.58, fillOpacity: style.fillOpacity * 0.55 })
+    }
+    vector.bringToFront()
+  }
+  highlighted.forEach(id => {
+    if (landStyles[id].fillOpacity) vectors.get(id)?.bringToFront()
+  })
+}
 const home = [28.556, 77.093]
 const label = value => value.replaceAll('_', ' ')
 const basemaps = { street: 'OpenStreetMap', satellite: 'Esri Satellite', terrain: 'OpenTopoMap' }
 
 function Glyph({ type }) {
-  const paths = { eye: 'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Zm13 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0', layers: 'm12 3 10 6-10 6L2 9Zm-10 10 10 6 10-6M2 17l10 6 10-6', map: 'm3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3ZM9 3v15M15 6v15', target: 'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M8 12h8m-4-4v8', plus: 'M12 5v14M5 12h14', minus: 'M5 12h14', search: 'M21 21l-6-6M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0', menu: 'M4 6h16M4 12h16M4 18h16' }
+  const paths = { eye: 'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Zm13 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0', layers: 'm12 3 10 6-10 6L2 9Zm-10 10 10 6 10-6M2 17l10 6 10-6', target: 'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M8 12h8m-4-4v8', plus: 'M12 5v14M5 12h14', minus: 'M5 12h14', search: 'M21 21l-6-6M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0', menu: 'M4 6h16M4 12h16M4 18h16' }
   return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[type]} /></svg>
 }
 
@@ -25,14 +50,14 @@ function featurePopup(feature, layer, name) {
     const container = document.createElement('div')
     container.className = 'feature-info'
     const title = document.createElement('h3')
-    title.textContent = name
+    title.textContent = feature.properties?.Names || name
     container.append(title)
     const table = document.createElement('table')
     Object.entries(feature.properties || {}).forEach(([key, value]) => {
       if (value === null || value === '') return
       const row = table.insertRow()
-      row.insertCell().textContent = label(key)
-      row.insertCell().textContent = typeof value === 'object' ? JSON.stringify(value) : String(value)
+      row.insertCell().textContent = key === 'Area_Ac' ? 'GIS attribute (acres)' : label(key)
+      row.insertCell().textContent = key === 'Area_Ac' ? acres(Number(value)) : typeof value === 'object' ? JSON.stringify(value) : String(value)
     })
     if (!table.rows.length) container.append('No attributes available.')
     else container.append(table)
@@ -94,7 +119,11 @@ function MapWorkspace({ onSignOut }) {
   const [orthoVisible, setOrthoVisible] = useState(false)
   const [orthoStatus, setOrthoStatus] = useState('')
   const [query, setQuery] = useState('')
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [advanced, setAdvanced] = useState(false)
+  const [view, setView] = useState('compare')
+  const [focus, setFocus] = useState(null)
+  const navigationRequest = useRef(0)
   const [position, setPosition] = useState({ lat: home[0], lng: home[1], zoom: 13 })
   const [status, setStatus] = useState('Loading map…')
   const [tableItem, setTableItem] = useState(null)
@@ -145,9 +174,13 @@ function MapWorkspace({ onSignOut }) {
           if (!response.ok) throw new Error(`HTTP ${response.status}`)
           const data = await response.json()
           if (disposed) return null
-          const color = layerColors[item.id]
+          const color = landStyles[item.id]?.color || layerColors[item.id]
           const vector = L.geoJSON(data, {
-            style: { color, weight: item.group === 'Boundaries' ? 2.5 : item.group === 'OMDA_Lands' ? 2.2 : 1.5, fillOpacity: item.group === 'Boundaries' ? 0.035 : item.group === 'OMDA_Lands' ? 0.1 : 0.2, dashArray: item.group === 'Boundaries' ? '7 5' : undefined },
+            filter: item.filter,
+            style: feature => {
+              const landStyle = landStyles[item.id === excludedLayer.id ? excludedFeatureId(feature) : item.id]
+              return landStyle || { color, weight: 1.5, fillOpacity: 0.16, dashArray: item.group === 'Boundaries' ? '7 5' : undefined }
+            },
             pointToLayer: (_, latlng) => L.circleMarker(latlng, { radius: 3.5, color, fillColor: color, fillOpacity: 0.8, weight: 1 }),
             onEachFeature: (feature, layer) => featurePopup(feature, layer, item.name),
           })
@@ -167,11 +200,12 @@ function MapWorkspace({ onSignOut }) {
       return task
     }
     map.loadProjectLayer = loadLayer
-    Promise.all(catalog.filter(item => initial.includes(item.id)).map(loadLayer)).then(vectors => {
+    Promise.all(initial.map(id => loadLayer(reviewLayers.get(id)))).then(vectors => {
       if (disposed) return
+      if (!navigationRequest.current) styleReviewLayers(layerCache)
       const bounds = L.latLngBounds([])
       vectors.forEach(vector => { if (vector?.getBounds().isValid()) bounds.extend(vector.getBounds()) })
-      if (bounds.isValid()) { projectBounds.current = bounds; if (!map.hasLayer(ortho)) map.fitBounds(bounds, { padding: [35, 35], maxZoom: 15 }) }
+      if (bounds.isValid()) { projectBounds.current = bounds; if (!navigationRequest.current && !map.hasLayer(ortho)) map.fitBounds(bounds, { padding: [35, 35], maxZoom: 15 }) }
     })
     return () => {
       disposed = true
@@ -184,7 +218,40 @@ function MapWorkspace({ onSignOut }) {
     }
   }, [])
 
+  async function showLand(row) {
+    const map = mapRef.current
+    const request = ++navigationRequest.current
+    const next = new Set(initial)
+    enabledRef.current = next
+    setEnabled(next)
+    setFocus(row?.id ?? null)
+    setTableItem(null)
+    map.closePopup()
+    cache.current.forEach((vector, id) => { if (!next.has(id)) vector.remove() })
+    const visible = await Promise.all([...next].map(id => map.loadProjectLayer(reviewLayers.get(id))))
+    if (mapRef.current !== map || request !== navigationRequest.current) return
+    visible.forEach(vector => { if (vector && !map.hasLayer(vector)) vector.addTo(map) })
+    styleReviewLayers(cache.current, row?.layers)
+  }
+
+  function toggleAdvanced() {
+    if (advanced) {
+      const row = [...landRows, ...leaseRows].find(row => row.id === focus)
+      showLand(row)
+    } else {
+      styleReviewLayers(cache.current)
+      const split = ['aai-retained', 'dial-additional'].filter(id => enabledRef.current.has(id))
+      if (split.length) {
+        split.forEach(id => setVisibility(reviewLayers.get(id), false))
+        setVisibility(excludedLayer, true)
+      }
+    }
+    setAdvanced(!advanced)
+    setSidebarOpen(true)
+  }
+
   function setVisibility(item, visible) {
+    navigationRequest.current += 1
     const next = new Set(enabledRef.current)
     if (visible) next.add(item.id)
     else next.delete(item.id)
@@ -200,10 +267,13 @@ function MapWorkspace({ onSignOut }) {
   }
   async function zoomToLayer(item) {
     setVisibility(item, true)
-    const vector = await mapRef.current.loadProjectLayer(item)
-    if (vector?.getBounds().isValid()) mapRef.current.fitBounds(vector.getBounds(), { padding: [35, 35], maxZoom: 18 })
+    const map = mapRef.current
+    const request = navigationRequest.current
+    const vector = await map.loadProjectLayer(item)
+    if (mapRef.current === map && request === navigationRequest.current && vector?.getBounds().isValid()) map.fitBounds(vector.getBounds(), { padding: [35, 35], maxZoom: 18 })
   }
   function fitProject() {
+    navigationRequest.current += 1
     if (projectBounds.current?.isValid()) mapRef.current.fitBounds(projectBounds.current, { padding: [35, 35] })
     else mapRef.current.setView(home, 13)
   }
@@ -225,18 +295,23 @@ function MapWorkspace({ onSignOut }) {
     }
   }
   function hideAll() {
+    navigationRequest.current += 1
     setTableItem(null)
     cache.current.forEach(vector => vector.remove())
     enabledRef.current = new Set()
     setEnabled(new Set())
   }
   const filtered = catalog.filter(item => `${item.name} ${label(item.group)}`.toLowerCase().includes(query.toLowerCase()))
+  const legend = Object.keys(landLegend).filter(id => enabled.has(id))
+  const highlighted = [...landRows, ...leaseRows].find(row => row.id === focus)?.layers ?? []
+  const missingReviewLayer = !advanced && legend.some(id => loadState[id] === 'error')
   const loading = Object.values(loadState).filter(state => state === 'loading').length
 
   return <div className="workspace">
-    <header className="app-header"><a className="brand" href="/" aria-label="DIAL GIS home"><span className="brand-icon"><Glyph type="map" /></span><span>DIAL<span className="brand-light"> GIS</span></span></a><button className="mobile-toggle" aria-label="Toggle vector layer panel" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><button className="sign-out-button" onClick={onSignOut}>Logout</button></header>
+    <header className="app-header"><a className="brand review-brand" href="/"><img className="review-brand-logo" src="/gmr.png" alt="GMR" width="64" height="24" /><span>IGI Airport Land Review</span></a><div className="review-header-actions"><button className="review-mode-button" onClick={toggleAdvanced}>{advanced ? 'Land review' : 'Advanced layers'}</button><button className="mobile-toggle" aria-label={sidebarOpen ? 'Hide side panel' : 'Show side panel'} aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><button className="sign-out-button" onClick={onSignOut}>Logout</button></div></header>
     <div className="workspace-body">
-      <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`} aria-label="Asset layers">
+      <aside className={`sidebar ${advanced ? '' : 'review-sidebar'} ${sidebarOpen ? 'is-open' : ''}`} aria-label={advanced ? 'Asset layers' : 'Land review panel'}>
+        {advanced && <div className="advanced-layer-panel">
         <div className="sidebar-heading"><h1>Asset Layers</h1></div>
         <label className="layer-search"><Glyph type="search"/><input type="search" placeholder="Find a layer…" aria-label="Search asset layers" value={query} onChange={event => setQuery(event.target.value)}/></label>
         <div className="layer-actions"><span>{catalog.length} layers</span><button onClick={hideAll} disabled={!enabled.size}>Hide all</button></div>
@@ -250,7 +325,9 @@ function MapWorkspace({ onSignOut }) {
               <summary><strong>{label(group)}</strong><span>{items.length}</span></summary>
               <div className="section-select-row"><label className="section-select-all"><input type="checkbox" aria-label={`Select all ${label(group)} layers`} checked={selectedCount === sectionItems.length} ref={input => { if (input) input.indeterminate = selectedCount > 0 && selectedCount < sectionItems.length }} onChange={event => sectionItems.forEach(item => setVisibility(item, event.target.checked))}/><span>Select all</span><small>{selectedCount}/{sectionItems.length}</small></label>{group === 'OMDA_Lands' && <button className="attribute-table-button" aria-label="Open OMDA Lands summary table" title="Open OMDA Lands summary table" onClick={() => setTableItem(omdaSummary)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 10v10M15 10v10"/></svg></button>}</div>
               <div>{items.map(item => <div className={`layer-row ${enabled.has(item.id) ? 'is-visible' : ''}`} key={item.id}>
-                <label><input type="checkbox" checked={enabled.has(item.id)} onChange={event => setVisibility(item, event.target.checked)}/><span className="layer-symbol" style={{ background: layerColors[item.id] }}/><span className="layer-name">{item.name}<small>{loadState[item.id] === 'loading' ? 'Loading…' : loadState[item.id] === 'error' ? 'Failed to load. Toggle to retry.' : `${item.count.toLocaleString()} features`}</small></span></label>
+                <label><input type="checkbox" checked={enabled.has(item.id)} onChange={event => setVisibility(item, event.target.checked)}/><span className="layer-symbol" style={{ background: item.id === excludedLayer.id
+                  ? `linear-gradient(90deg, ${landStyles['aai-retained'].color} 50%, ${landStyles['dial-additional'].color} 50%)`
+                  : landStyles[item.id]?.color || layerColors[item.id] }}/><span className="layer-name">{item.name}<small>{loadState[item.id] === 'loading' ? 'Loading…' : loadState[item.id] === 'error' ? 'Failed to load. Toggle to retry.' : `${item.count.toLocaleString()} features`}</small></span></label>
                 {item.group === 'OMDA_Lands' && enabled.has(item.id) && <button className="attribute-table-button" aria-label={`Open attribute table for ${item.name}`} title="Open attribute table" aria-pressed={tableItem?.id === item.id} onClick={() => setTableItem(item)}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 10v10M15 10v10"/></svg></button>}
                 <button className="zoom-layer" aria-label={`Zoom to ${item.name}`} title="Zoom to layer" onClick={() => zoomToLayer(item)}><Glyph type="target"/></button>
               </div>)}</div>
@@ -259,8 +336,18 @@ function MapWorkspace({ onSignOut }) {
           {!filtered.length && <p className="empty-state">No layers match “{query}”.</p>}
         </div>
         <div className="sidebar-footer"><button className="project-extent" onClick={fitProject}><Glyph type="target"/>Zoom to project</button><span>Click a map feature to view its attributes.</span></div>
+        </div>}
+        <div className="guided-review-panel" hidden={advanced}>
+          <OmdaReview view={view} setView={setView} focus={focus} showLand={showLand}/>
+        </div>
       </aside>
-      <main className="map-panel" aria-label="Interactive airport map"><div ref={mapEl} className="map"/><div className="visible-layer-count" role="status"><Glyph type="eye"/><span>{enabled.size} {enabled.size === 1 ? 'layer' : 'layers'} visible</span></div>
+      <main className="map-panel" aria-label="Interactive airport map"><div ref={mapEl} className="map"/>
+        {advanced ? <div className="visible-layer-count" role="status"><Glyph type="eye"/><span>{enabled.size} {enabled.size === 1 ? 'layer' : 'layers'} visible</span></div> :
+          <div className="review-map-legend" role="region" aria-label="Map legend" tabIndex={0}>
+            <strong>OMDA land categories</strong>
+            {legend.map(id => <span key={id} aria-current={highlighted.includes(id) ? true : undefined}><i style={{ borderTopColor: landStyles[id].color, borderTopStyle: landStyles[id].dashArray ? 'dashed' : 'solid' }} />{landLegend[id]}</span>)}
+            {missingReviewLayer && <small role="status">Some boundaries could not load. Select the category to retry.</small>}
+          </div>}
         <MeasurementControl mapRef={mapRef}/>
         
         <div className="basemap-select"><Glyph type="layers"/><span>Basemap</span><select aria-label="Choose basemap" value={selected} onChange={event => changeBasemap(event.target.value)}>{Object.entries(basemaps).map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select><button className="ortho-toggle" type="button" aria-pressed={orthoVisible} onClick={toggleOrtho}>Ortho photo</button></div>
@@ -272,9 +359,3 @@ function MapWorkspace({ onSignOut }) {
     <footer className="status-bar"><span className="map-status" role="status"><span className="status-dot"/>{loading ? `Loading ${loading} vector layer${loading === 1 ? '' : 's'}…` : orthoVisible && position.zoom >= 10 ? orthoStatus : status}</span><span className="developer-credit">Developed by Geokno India Private Limited</span><span className="coordinates">{Math.abs(position.lat).toFixed(4)}° {position.lat >= 0 ? 'N' : 'S'}<span className="footer-divider"/>{Math.abs(position.lng).toFixed(4)}° {position.lng >= 0 ? 'E' : 'W'}</span><span className="zoom-label">Zoom <strong>{position.zoom}</strong></span></footer>
   </div>
 }
-
-
-
-
-
-

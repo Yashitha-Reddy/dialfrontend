@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 
 // Spherical area with wrapped longitude differences, in square metres.
@@ -36,7 +36,6 @@ export default function MeasurementControl({ mapRef }) {
   const [mode, setMode] = useState('line')
   const [points, setPoints] = useState([])
   const [finished, setFinished] = useState(false)
-  const units = 'metric'
   const overlay = useRef(null)
   const drawing = open && !finished
   const twoPoint = mode === 'rectangle' || mode === 'circle'
@@ -58,16 +57,17 @@ export default function MeasurementControl({ mapRef }) {
     const stopPopup = () => map.closePopup()
     const key = event => {
       if (event.key === 'Escape') setOpen(false)
-      if (event.key === 'Enter') setPoints(current => {
+      if (event.key === 'Enter' && (event.target === document.body || container.contains(event.target))) setPoints(current => {
         if (current.length >= minimum) setFinished(true)
         return current
       })
     }
-    map.on('click', click)
+    // Capture drawing points before a feature popup can consume the click.
+    map.on('preclick', click)
     map.on('popupopen', stopPopup)
     document.addEventListener('keydown', key)
     return () => {
-      map.off('click', click)
+      map.off('preclick', click)
       map.off('popupopen', stopPopup)
       document.removeEventListener('keydown', key)
       container.classList.remove('is-measuring')
@@ -91,13 +91,10 @@ export default function MeasurementControl({ mapRef }) {
     distance = 2 * Math.PI * 6371000 * Math.sin(radius / 6371000)
   }
   const number = value => value.toLocaleString(undefined, { maximumFractionDigits: 2 })
-  const lengthText = units === 'imperial'
-    ? distance >= 1609.344 ? `${number(distance / 1609.344)} mi` : `${number(distance / 0.3048)} ft`
-    : distance >= 1000 ? `${number(distance / 1000)} km` : `${number(distance)} m`
-  const areaText = units === 'imperial'
-    ? area >= 4046.8564224 ? `${number(area / 4046.8564224)} acres` : `${number(area / 0.09290304)} ft²`
-    : units === 'hectares' ? `${number(area / 10000)} ha`
-      : area >= 1000000 ? `${number(area / 1000000)} km²` : `${number(area)} m²`
+  const lengthText = distance >= 1000 ? `${number(distance / 1000)} km` : `${number(distance)} m`
+  const areaText = `${number(area / 4046.8564224)} acres`
+  const resultText = mode === 'line' ? `Distance ${lengthText}` : `Area ${areaText} · Perimeter ${lengthText}`
+
   useEffect(() => {
     const map = mapRef.current
     if (!map) return
@@ -126,18 +123,18 @@ export default function MeasurementControl({ mapRef }) {
 
   const reset = nextMode => { setMode(nextMode); setPoints([]); setFinished(false) }
 
-  const tools = [['line', 'Line'], ['polygon', 'Polygon'], ['rectangle', 'Rectangle'], ['circle', 'Circle'], ['area', 'Area']]
+  const tools = [['line', 'Distance'], ['polygon', 'Area'], ['rectangle', 'Rectangle'], ['circle', 'Circle']]
   return <section className="measurement-control" aria-label="Map measurement">
-    <button className="measurement-toggle" aria-expanded={open} title="Measurement tools" onClick={() => setOpen(value => !value)}><MeasureIcon type="ruler"/></button>
+    <button className="measurement-toggle" aria-expanded={open} title="Measurement tools" onClick={() => setOpen(value => !value)}><MeasureIcon type="ruler"/>Measure</button>
     {open && <div className="measurement-panel">
-      
+      <p className="measurement-help">{finished ? resultText : twoPoint ? 'Click two points on the map.' : mode === 'line' ? 'Click two or more points. Choose Finish when done.' : 'Click around the area. Choose Finish when done.'}</p>
       <div className="measurement-modes">
-        {tools.map(([id, name]) => <button key={id} aria-label={name} aria-pressed={mode === id} title={id === 'area' ? 'Measure a polygon area' : `Measure ${name.toLowerCase()}`} onClick={() => reset(id)}><MeasureIcon type={id}/></button>)}
+        {tools.map(([id, name]) => <button key={id} aria-label={name} aria-pressed={mode === id} title={`Measure ${name.toLowerCase()}`} onClick={() => reset(id)}><MeasureIcon type={id}/></button>)}
       </div>
       <button className="measurement-clear" title="Clear measurement" aria-label="Clear measurement" onClick={() => reset(mode)}><MeasureIcon type="clear"/></button>
       {!finished && <div className="measurement-actions">
         {points.length > 0 && <button title="Undo last point" aria-label="Undo last point" onClick={() => setPoints(current => current.slice(0, -1))}><MeasureIcon type="undo"/></button>}
-        {!twoPoint && points.length >= minimum && <button title="Finish measurement" aria-label="Finish measurement" onClick={() => setFinished(true)}><MeasureIcon type="finish"/></button>}
+        {!twoPoint && points.length >= minimum && <button title="Finish measurement" aria-label="Finish measurement" onClick={() => setFinished(true)}><MeasureIcon type="finish"/>Finish</button>}
       </div>}
 
     </div>}
