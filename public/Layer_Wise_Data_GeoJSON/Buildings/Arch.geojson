@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Arch",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Code": "BLD-01-01", "Class": "Building", "Sub_Class": "Arch", "Area_Type": "Cityside", "Name": null, "Area": 249.84, "Perimeter": 64.278, "Ground_Elv": 217.869, "Layer": "Arch", "B_ID": "B0864", "Shape_Leng": 64.2782072973, "Shape_Area": 249.84036519599999 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 77.06085791945118, 28.544913028824027, 217.868900000001304 ], [ 77.061049584424978, 28.544911126464097, 217.868900000001304 ], [ 77.061048064331132, 28.544791725085172, 217.868900000001304 ], [ 77.060852370655738, 28.54479469651632, 217.868900000001304 ], [ 77.06085791945118, 28.544913028824027, 217.868900000001304 ] ] ] ] } }
+]
+}

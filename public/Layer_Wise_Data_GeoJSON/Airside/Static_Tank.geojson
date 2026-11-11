@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Static_Tank",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Code": "AIR-13-05", "Class": "Airport Facility", "Sub_Class": "Static Tank", "Area_Type": "Airside", "Area": 90.536, "Perimeter": 39.755, "Name": null, "Layer": "Static Tank", "Elevation": 219.592, "Shape_Leng": 39.7549168468, "Shape_Area": 90.535654944200004 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 77.088562434722704, 28.568386809301902, 219.606700000003912 ], [ 77.088556907565263, 28.56827134421729, 219.737200000003213 ], [ 77.08848474398971, 28.56827403609006, 219.723199999993085 ], [ 77.088490270047046, 28.568389501197398, 219.591899999999441 ], [ 77.088562434722704, 28.568386809301902, 219.606700000003912 ] ] ] ] } }
+]
+}

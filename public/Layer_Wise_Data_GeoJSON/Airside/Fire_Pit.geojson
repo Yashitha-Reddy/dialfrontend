@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Fire_Pit",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Code": "AIR-13-02", "Class": "Airport Facility", "Sub_Class": "Fire Pit", "Area_Type": "Airside", "Area": 104.712, "Perimeter": 41.822, "Name": null, "Layer": "Fire Pit", "Elevation": 218.813, "Shape_Leng": 41.8216604558, "Shape_Area": 104.712011995 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 77.066079550969462, 28.545077072926553, 218.8237999999983 ], [ 77.066058683678065, 28.54500440145971, 218.958700000002864 ], [ 77.065933883516479, 28.545032344330853, 218.968999999997322 ], [ 77.065954751751761, 28.545105015805206, 218.812999999994645 ], [ 77.066079550969462, 28.545077072926553, 218.8237999999983 ] ] ] ] } }
+]
+}
