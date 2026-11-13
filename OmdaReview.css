@@ -1,7 +1,4 @@
 .review-header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
-.review-mode-button { padding: 7px 11px; border: 1px solid #cfddd9; border-radius: 6px; background: white; color: #244642; font-size: 12px; font-weight: 650; white-space: nowrap; }
-.review-mode-button:hover { background: #e9f4f1; }
-.sidebar.review-sidebar { width: clamp(360px, 35vw, 480px); }
 .advanced-layer-panel, .guided-review-panel { display: flex; flex: 1; flex-direction: column; min-height: 0; }
 .advanced-layer-panel[hidden], .guided-review-panel[hidden] { display: none; }
 .land-review { display: flex; flex: 1; flex-direction: column; min-height: 0; color: #233936; }
@@ -67,9 +64,6 @@
 }
 @media (max-width: 600px) {
   .review-header-actions { gap: 5px; }
-  .review-mode-button { padding: 6px; font-size: 10px; }
-  .review-sidebar.is-open { position: relative; width: 100%; height: 52%; flex-shrink: 0; z-index: auto; border: 0; border-bottom: 1px solid #dce6e1; box-shadow: none; }
-  .workspace-body:has(.review-sidebar.is-open) { flex-direction: column; }
   .review-intro { padding: 10px 13px 6px; }
   .review-intro h1 { font-size: 19px; }
   .review-scroll { padding: 10px 13px 15px; }

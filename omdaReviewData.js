@@ -2,19 +2,19 @@ export const landRows = [
   {
     id: 'airport', label: 'Total airport land', layers: ['Total_IGIA_Land'],
     agreement: 5106, gis: 4984.38,
-    detail: 'The agreement gives the airport-wide baseline. The GIS figure comes from the mapped total airport boundary.',
+    detail: 'The agreement gives the airport-wide baseline. The Geokno survey figure comes from the mapped total airport boundary.',
     source: 'Slide 2 and workbook C21:F22, C25:F25. GIS total airport boundary.',
   },
   {
     id: 'original', label: 'Originally leased to DIAL', layers: ['Demised_Premises'],
     agreement: 4609, gis: 4487.17,
-    detail: 'Demised Premises means the land originally leased to DIAL. The GIS figure comes from the mapped original lease boundary.',
+    detail: 'Demised Premises means the land originally leased to DIAL. The Geokno survey figure comes from the mapped original lease boundary.',
     source: 'Slide 2 and workbook C28:F28. GIS Demised Premises.',
   },
   {
     id: 'carved', label: 'Carved out of the DIAL lease', layers: ['Carved_Out_Assets'],
     agreement: 250, gis: 250.12,
-    detail: 'Schedule 27 lists these separately from Excluded Premises. The GIS figure adds the mapped carved-out assets. Several boundaries are approximate.',
+    detail: 'Schedule 27 lists these separately from Excluded Premises. The Geokno survey figure adds the mapped carved-out assets. Several boundaries are approximate.',
     source: 'Slides 2–3 and workbook C12:D12, C26:E26. GIS Carved Out Assets.',
   },
   {
@@ -26,13 +26,13 @@ export const landRows = [
   {
     id: 'nta', label: 'Aerocity assets (NTA)', layers: ['AerocityAssets_NTA'],
     agreement: 230.45, gis: 110.94,
-    detail: 'The 5% reference uses 4,608.90 acres as its base. The GIS figure comes from the mapped Aerocity asset records and is a separate asset measure.',
+    detail: 'The 5% reference uses 4,608.90 acres as its base. The Geokno survey figure comes from the mapped Aerocity asset records and is a separate asset measure.',
     source: 'Slide 2 and workbook C31:D31. GIS Aerocity Assets NTA.',
   },
   {
     id: 'property', label: 'Mapped DIAL property boundary', layers: ['IGI_DIAL_Property_Boundary'],
     gis: 4733.94,
-    detail: 'This acreage is stored on the GIS property boundary. The sum of the original DIAL lease and the additional leased area in the mapped records is 4,677.36 acres. The 56.58-acre difference needs a boundary and scope check.',
+    detail: 'This acreage is recorded on the property boundary in the Geokno survey. The sum of the original DIAL lease and the additional leased area in the mapped records is 4,677.36 acres. The 56.58-acre difference needs a boundary and scope check.',
     source: 'GIS IGI DIAL Property Boundary, Area_Ac. The source summaries have no matching figure.',
   },
 ]

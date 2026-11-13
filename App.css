@@ -47,3 +47,88 @@ html, body, #root { width: 100%; height: 100%; margin: 0; }
 }
 .ortho-toggle { flex-shrink: 0; padding: 4px 7px; border: 1px solid #dce7e0; border-radius: 5px; background: #fff; color: #365e50; font-size: 11px; white-space: nowrap; }
 .ortho-toggle:hover, .ortho-toggle[aria-pressed="true"] { background: #e2f2eb; border-color: #8bbba9; color: #17644e; }
+
+/* Layer panel tidy-up: consistent rows, one aligned icon column, OMDA Lands views. */
+.sidebar { width: 360px; }
+.layer-groups { padding: 4px 12px 16px; }
+.layer-group summary { padding: 14px 8px; font-size: 13px; color: #24392f; }
+.layer-group summary .group-count { margin-left: auto; color: #8a9a8f; font-size: 11px; font-variant-numeric: tabular-nums; }
+.layer-group[open] { padding-bottom: 8px; }
+.section-select-row { display: flex; align-items: center; gap: 4px; min-height: 36px; padding: 0 6px 0 12px; margin: 0 0 6px; border-bottom: 1px solid #edf2ee; }
+.section-select-row .section-select-all { flex: 1; min-width: 0; padding: 8px 0; margin: 0; border: 0; font-size: 11px; }
+.section-select-row .section-select-all small { font-size: 10px; }
+.layer-list { display: grid; gap: 4px; }
+.layer-row { gap: 4px; min-height: 48px; margin: 0; padding: 6px 6px 6px 12px; box-sizing: border-box; border: 1px solid transparent; }
+.layer-row.is-visible { background: #f2f8f4; border-color: #e3efe7; }
+.layer-row label { gap: 10px; }
+.layer-name { font-size: 12px; color: #24392f; }
+.layer-name small { font-size: 10px; margin-top: 2px; }
+.layer-row-actions { display: flex; align-items: center; justify-content: flex-end; gap: 2px; flex-shrink: 0; }
+.layer-row-actions .icon-slot { display: block; width: 28px; height: 28px; }
+.layer-row-actions .attribute-table-button, .layer-row-actions .zoom-layer { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 5px; background: transparent; color: #6f947d; cursor: pointer; }
+.layer-row-actions .attribute-table-button:hover, .layer-row-actions .attribute-table-button[aria-pressed="true"], .layer-row-actions .zoom-layer:hover { background: #e4eee8; color: #24694c; }
+.layer-row-actions svg { width: 16px; height: 16px; }
+.omda-tabs { display: flex; gap: 2px; margin: 0 4px 10px; padding: 3px; border-radius: 7px; background: #eef3f0; }
+.omda-tabs button { flex: 1; min-height: 30px; padding: 4px 6px; border: 0; border-radius: 5px; background: transparent; color: #4f665b; font: inherit; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.omda-tabs button:hover { color: #1d5a49; }
+.omda-tabs button[aria-selected="true"] { background: #fff; color: #155e4c; box-shadow: 0 1px 3px #1c35221f; }
+.omda-review-embedded .land-review { display: block; }
+.omda-review-embedded .review-scroll { padding: 0 4px 8px; overflow: visible; }
+.omda-review-embedded .review-comparison { font-size: 11px; }
+.omda-review-embedded .review-comparison th, .omda-review-embedded .review-comparison td { padding: 6px 4px; }
+@media (max-width: 850px) { .sidebar { width: 320px; } }
+@media (max-width: 600px) { .sidebar { width: min(340px, 92vw); } }
+
+/* Compare / Follow the lease: same text style as the layer list, colour only in a small swatch. */
+.omda-review-embedded .review-category-button { color: #24392f; font-size: 12px; font-weight: 400; gap: 10px; }
+.omda-review-embedded .review-category-button:not(:has(.review-label-swatches))::before { content: ''; flex: 0 0 10px; height: 10px; border-radius: 2px; background: var(--review-layer-color); }
+.omda-review-embedded .review-label-swatches { flex-basis: 10px; }
+.omda-review-embedded .review-comparison-group-heading .review-category-button { font-weight: 600; }
+.omda-review-embedded .review-comparison thead th { font-weight: 600; color: #4f665b; }
+.omda-review-embedded .review-info-button { color: #8a9a8f !important; }
+.omda-review-embedded .review-info-button:hover { color: #24694c !important; }
+.omda-review-embedded .review-allocation-select span { color: #24392f !important; font-size: 12px; }
+.omda-review-embedded .review-allocation-select strong { color: #24392f; }
+.omda-review-embedded .review-label-with-info { gap: 6px; padding-left: 6px; }
+.omda-review-embedded .review-comparison-part .review-label-with-info { padding-left: 18px; }
+.omda-review-embedded .review-comparison-part .review-category-button { padding-left: 6px; }
+.omda-review-embedded .review-row-checkbox { flex-shrink: 0; width: 13px; height: 13px; margin: 0; accent-color: #26826a; cursor: pointer; }
+.omda-review-embedded .review-allocation-card .review-row-checkbox { position: absolute; top: 12px; left: 9px; z-index: 1; }
+.omda-review-embedded .review-allocation-select { padding-left: 30px; }
+.omda-review-embedded .review-comparison thead th { white-space: normal; vertical-align: bottom; line-height: 1.25; }
+.omda-review-embedded .review-comparison thead th:not(:first-child) { width: 64px; }
+.fill-control { display: flex; align-items: center; gap: 6px; padding-left: 10px; border-left: 1px solid #e3e9e3; font-size: 10px; color: #67816f; }
+.fill-control input { width: 90px; accent-color: #26826a; cursor: pointer; }
+.fill-control output { min-width: 30px; font-size: 11px; color: #30483c; font-variant-numeric: tabular-nums; }
+@media (max-width: 600px) { .fill-control > span { display: none; } .fill-control input { width: 64px; } }
+.review-header-actions .fill-control { padding: 6px 12px 6px 10px; border: 1px solid #dfe8e1; border-radius: 6px; background: #fff; font-size: 11px; white-space: nowrap; }
+/* Map credits: white text on a dark strip. */
+.leaflet-container .leaflet-control-attribution { background: rgba(0, 0, 0, 0.75); color: #fff; padding: 2px 8px; }
+.leaflet-container .leaflet-control-attribution a { color: #9fd8ff; }
+/* Search bar with the Zoom to project button beside it. */
+.layer-search-row { display: flex; align-items: stretch; gap: 8px; margin: 0 20px; }
+.layer-search-row .layer-search { flex: 1; min-width: 0; margin: 0; }
+.project-extent-icon { display: grid; place-items: center; flex: 0 0 40px; padding: 0; border: 1px solid #e1e8e3; border-radius: 7px; background: #fbfcfb; color: #4f7a62; cursor: pointer; }
+.project-extent-icon:hover { background: #eef6f1; color: #24694c; }
+.sidebar-footer { padding: 10px 20px; }
+.sidebar-footer > span { margin-top: 0; }
+.layer-actions { padding: 8px 22px 10px; }
+.layer-search-row { margin-bottom: 14px; }
+.hide-all-button:disabled { opacity: .45; cursor: default; background: #fbfcfb; color: #4f7a62; }
+/* Map legend: visible layers with a quick hide button. */
+.map-legend { position: absolute; z-index: 500; top: 20px; left: 20px; width: 250px; max-width: calc(100% - 140px); border: 1px solid #e3e9e3; border-radius: 8px; background: #fff; box-shadow: 0 2px 12px #263b3810; color: #4d6d5b; font-size: 11px; }
+.map-legend summary { display: flex; align-items: center; gap: 8px; padding: 10px 14px; cursor: pointer; list-style: none; }
+.map-legend summary::-webkit-details-marker { display: none; }
+.map-legend summary::after { content: '›'; margin-left: auto; font-size: 16px; line-height: 1; color: #90a095; transition: transform .15s; }
+.map-legend[open] summary::after { transform: rotate(90deg); }
+.map-legend-list { list-style: none; margin: 0; padding: 4px 6px 6px; max-height: 260px; overflow-y: auto; border-top: 1px solid #edf2ee; }
+.map-legend-list li { display: flex; align-items: center; gap: 8px; padding: 3px 4px 3px 8px; border-radius: 5px; }
+.map-legend-list li:hover { background: #f3f8f4; }
+.map-legend-name { flex: 1; min-width: 0; color: #24392f; font-size: 11px; overflow-wrap: anywhere; }
+.map-legend-hide { display: grid; place-items: center; flex: 0 0 26px; height: 26px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: #6f947d; cursor: pointer; }
+.map-legend-hide:hover { background: #e4eee8; color: #24694c; }
+.map-legend-hide svg { width: 15px; height: 15px; }
+@media (max-width: 850px) { .map-legend { top: 12px; left: 12px; } }
+.layer-row-actions .review-info-button { flex: 0 0 28px; width: 28px; height: 28px; color: #8a9a8f !important; }
+.layer-row-actions .review-info-button:hover { background: #e4eee8; color: #24694c !important; }
+.layer-row-actions .review-info-button span { width: 14px; height: 14px; font-size: 10px; }
