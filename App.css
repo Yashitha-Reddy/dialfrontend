@@ -132,3 +132,49 @@ html, body, #root { width: 100%; height: 100%; margin: 0; }
 .layer-row-actions .review-info-button { flex: 0 0 28px; width: 28px; height: 28px; color: #8a9a8f !important; }
 .layer-row-actions .review-info-button:hover { background: #e4eee8; color: #24694c !important; }
 .layer-row-actions .review-info-button span { width: 14px; height: 14px; font-size: 10px; }
+
+/* ---------- Phone layout (desktop unchanged) ---------- */
+.sidebar-backdrop { display: none; }
+@media (max-width: 600px) {
+  .app-header { height: auto; flex-wrap: wrap; gap: 8px 10px; padding: 8px 12px; }
+  .app-header .brand { flex: 1; min-width: 0; font-size: 15px; letter-spacing: 0; }
+  .brand-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .review-header-actions { display: contents; }
+  .mobile-toggle { order: 1; width: 40px; height: 40px; margin-left: 0; }
+  .app-header .sign-out-button { order: 2; height: 40px; padding: 0 12px; }
+  .review-header-actions .fill-control { order: 3; flex: 1 0 100%; box-sizing: border-box; padding: 4px 12px; }
+  .review-header-actions .fill-control > span { display: inline; }
+  .fill-control input { flex: 1; width: auto; height: 28px; }
+
+  .sidebar { z-index: 1200; width: min(340px, 88vw); }
+  .sidebar-backdrop { display: block; position: absolute; inset: 0; z-index: 1150; background: #10201a66; }
+
+  .layer-row { min-height: 52px; }
+  .layer-row input, .section-select-all input, .omda-review-embedded .review-row-checkbox { width: 18px; height: 18px; }
+  .layer-row-actions .icon-slot, .layer-row-actions .attribute-table-button, .layer-row-actions .zoom-layer, .layer-row-actions .review-info-button { width: 36px; height: 36px; flex-basis: 36px; }
+  .omda-tabs button { min-height: 36px; }
+  .project-extent-icon { flex-basis: 44px; }
+
+  .map-legend { top: 12px; left: 12px; width: auto; max-width: calc(100% - 150px); }
+  .map-legend-list { max-height: 30vh; }
+  .map-legend-hide { flex-basis: 34px; height: 34px; }
+  .map-tools { top: 64px; right: 12px; }
+  .map-tools button { width: 40px; height: 40px; }
+  .basemap-select { right: 12px; bottom: 40px; max-width: calc(100% - 24px); box-sizing: border-box; }
+  .leaflet-container .leaflet-control-attribution { font-size: 8px !important; max-width: 100vw; }
+  .status-bar .developer-credit { font-size: 9px; }
+}
+@media (max-width: 600px) { .leaflet-bottom.leaflet-left .leaflet-control-scale { margin-bottom: 30px !important; } }
+/* Phone header: logo, title and menu only. Fill opacity and Logout live at the top of the drawer. */
+.drawer-account { display: none; }
+@media (max-width: 600px) {
+  .app-header { flex-wrap: nowrap; height: 56px; }
+  .app-header .brand-title { font-size: 15px; }
+  .review-header-actions .fill-control, .review-header-actions .sign-out-button { display: none; }
+  .mobile-toggle { margin-left: auto; }
+  .drawer-account { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #e8ede9; }
+  .drawer-account .fill-control { flex: 1; min-width: 0; padding: 0; border: 0; }
+  .drawer-account .fill-control > span { display: none; }
+  .drawer-account .fill-control input { flex: 1; width: auto; height: 28px; }
+  .drawer-account .sign-out-button { flex-shrink: 0; height: 36px; padding: 0 12px; }
+}

@@ -142,7 +142,9 @@ function MapWorkspace({ onSignOut }) {
   const [orthoVisible, setOrthoVisible] = useState(true)
   const [orthoStatus, setOrthoStatus] = useState('')
   const [query, setQuery] = useState('')
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  // Only used on phones: the layer panel is a drawer that starts closed so the map shows first.
+  // Desktop CSS ignores this and always shows the panel.
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [omdaTab, setOmdaTab] = useState('layers')
   const [fill, setFill] = useState(fillLevel)
   const [focus, setFocus] = useState(null)
@@ -306,6 +308,7 @@ function MapWorkspace({ onSignOut }) {
     else mapRef.current.loadProjectLayer(item)
   }
   async function zoomToLayer(item) {
+    setSidebarOpen(false)
     setVisibility(item, true)
     const map = mapRef.current
     const request = navigationRequest.current
@@ -313,6 +316,7 @@ function MapWorkspace({ onSignOut }) {
     if (mapRef.current === map && request === navigationRequest.current && vector?.getBounds().isValid()) map.fitBounds(vector.getBounds(), { padding: [35, 35], maxZoom: 18 })
   }
   function fitProject() {
+    setSidebarOpen(false)
     navigationRequest.current += 1
     if (projectBounds.current?.isValid()) mapRef.current.fitBounds(projectBounds.current, { padding: [35, 35] })
     else mapRef.current.setView(home, 13)
@@ -346,9 +350,11 @@ function MapWorkspace({ onSignOut }) {
   const loading = Object.values(loadState).filter(state => state === 'loading').length
 
   return <div className="workspace">
-    <header className="app-header"><a className="brand review-brand" href="/"><img className="review-brand-logo" src="/gmr.png" alt="GMR" width="64" height="24" /><span>IGI Airport Land Review</span></a><div className="review-header-actions"><button className="mobile-toggle" aria-label={sidebarOpen ? 'Hide side panel' : 'Show side panel'} aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><span className="fill-control"><span>Fill opacity</span><input type="range" min="0" max="1" step="0.05" value={fill} aria-label="Fill opacity of map areas" onChange={event => setFill(Number(event.target.value))}/><output>{Math.round(fill * 100)}%</output></span><button className="sign-out-button" onClick={onSignOut}>Logout</button></div></header>
+    <header className="app-header"><a className="brand review-brand" href="/"><img className="review-brand-logo" src="/gmr.png" alt="GMR" width="64" height="24" /><span className="brand-title">IGI Airport Land Review</span></a><div className="review-header-actions"><button className="mobile-toggle" aria-label={sidebarOpen ? 'Hide side panel' : 'Show side panel'} aria-expanded={sidebarOpen} onClick={() => setSidebarOpen(!sidebarOpen)}><Glyph type="menu"/></button><span className="fill-control"><span>Fill opacity</span><input type="range" min="0" max="1" step="0.05" value={fill} aria-label="Fill opacity of map areas" onChange={event => setFill(Number(event.target.value))}/><output>{Math.round(fill * 100)}%</output></span><button className="sign-out-button" onClick={onSignOut}>Logout</button></div></header>
     <div className="workspace-body">
+      {sidebarOpen && <div className="sidebar-backdrop" aria-hidden="true" onClick={() => setSidebarOpen(false)}/>}
       <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`} aria-label="Asset layers">
+        <div className="drawer-account"><span className="fill-control"><span>Fill opacity</span><input type="range" min="0" max="1" step="0.05" value={fill} aria-label="Fill opacity of map areas" onChange={event => setFill(Number(event.target.value))}/><output>{Math.round(fill * 100)}%</output></span><button className="sign-out-button" onClick={onSignOut}>Logout</button></div>
         <div className="advanced-layer-panel">
         <div className="sidebar-heading"><h1>Asset Layers</h1></div>
         <div className="layer-search-row"><label className="layer-search"><Glyph type="search"/><input type="search" placeholder="Find a layer…" aria-label="Search asset layers" value={query} onChange={event => setQuery(event.target.value)}/></label><button type="button" className="project-extent-icon" onClick={fitProject} aria-label="Zoom to project" title="Zoom to project"><Glyph type="target"/></button><button type="button" className="project-extent-icon hide-all-button" onClick={hideAll} disabled={!enabled.size} aria-label="Hide all layers" title="Hide all layers"><Glyph type="eyeOff"/></button></div>
