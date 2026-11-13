@@ -172,14 +172,18 @@ function MapWorkspace({ onSignOut }) {
     orthoPane.style.zIndex = '250'
     orthoPane.style.pointerEvents = 'none'
     const ortho = L.tileLayer('https://dialortho.s3.ap-south-1.amazonaws.com/tiles/{z}/{x}/{y}.png', {
-      pane: 'ortho', opacity: 1, minZoom: 10, maxZoom: 21, maxNativeZoom: 20, noWrap: true, attribution: 'DIAL Orthophoto captured Oct 2026 by Geokno India Private Limited',
+      pane: 'ortho', opacity: 1, minZoom: 10, maxZoom: 21, maxNativeZoom: 19, noWrap: true, attribution: 'DIAL Orthophoto captured Oct 2026 by Geokno India Private Limited',
     })
     let missingTiles = false
     ortho.on('loading', () => { missingTiles = false; setOrthoStatus('Loading orthophoto…') })
     ortho.on('tileerror', () => { missingTiles = true })
     ortho.on('load', () => setOrthoStatus(missingTiles ? 'Basemap shown where orthophoto tiles are unavailable' : 'Orthophoto ready'))
-    orthoRef.current = ortho
-    ortho.addTo(map)
+    // Rangpuri ortho tiles sit in their own folder in the same bucket and switch on and off with the main ortho.
+    const rangpuriOrtho = L.tileLayer('https://dialortho.s3.ap-south-1.amazonaws.com/tiles/Rangpuri/{z}/{x}/{y}.png', {
+      pane: 'ortho', opacity: 1, minZoom: 10, maxZoom: 21, maxNativeZoom: 19, noWrap: true,
+    })
+    orthoRef.current = L.layerGroup([ortho, rangpuriOrtho])
+    orthoRef.current.addTo(map)
     Object.values(layers).forEach(layer => {
       layer.on('loading', () => setStatus('Loading basemap…'))
       layer.on('load', () => setStatus('Map ready'))
